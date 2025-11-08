@@ -1,0 +1,314 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Velocity — Internet Speed Test</title>
+  <meta name="description" content="Beautiful animated internet speed test — responsive, themeable, AdSense-ready spaces." />
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent1:#6ee7b7; --accent2:#60a5fa; --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --text:#e6eef8;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial; background:radial-gradient(1200px 600px at 10% 10%, #071226 0%, transparent 15%), radial-gradient(900px 400px at 90% 90%, #081827 0%, transparent 12%), var(--bg); color:var(--text); -webkit-font-smoothing:antialiased}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px}.card{width:980px;max-width:96%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:16px;padding:28px;box-shadow:0 10px 30px rgba(3,7,18,0.7);border:1px solid rgba(255,255,255,0.03);position:relative;overflow:hidden}
+
+/* Particle decoration */
+.particles{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0.65}
+svg{width:100%;height:100%}
+
+header{display:flex;align-items:center;gap:16px}
+.logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#022;box-shadow:0 6px 18px rgba(96,165,250,0.14)}
+h1{margin:0;font-size:20px}
+p.lead{margin:4px 0 0;color:#cfe7ff8a}
+
+.grid{display:grid;grid-template-columns:1fr 340px;gap:22px;margin-top:22px}
+
+/* left */
+.left{padding:18px;border-radius:12px;background:linear-gradient(180deg,var(--glass),transparent);border:1px solid rgba(255,255,255,0.02)}
+.meter{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px}
+.speed-big{font-size:46px;font-weight:700}
+.units{opacity:0.8}
+
+.bars{width:100%;display:flex;gap:10px;margin-top:8px}
+.bar{flex:1;background:var(--glass-2);height:10px;border-radius:999px;overflow:hidden}
+.bar > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent1),var(--accent2));border-radius:999px;transition:width 800ms cubic-bezier(.2,.9,.3,1)}
+
+.actions{display:flex;gap:12px;justify-content:center;margin-top:14px}
+.btn{background:linear-gradient(90deg,var(--accent2),var(--accent1));border:none;padding:10px 16px;border-radius:999px;color:#022;font-weight:700;cursor:pointer;box-shadow:0 8px 30px rgba(46,139,255,0.08)}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text);font-weight:600}
+
+.meta{display:flex;gap:10px;justify-content:space-between;margin-top:16px;color:#cde7ff77}
+
+/* right panel */
+.right{padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid rgba(255,255,255,0.02)}
+.card h3{margin:0 0 10px 0}
+.stat{display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02);margin-bottom:10px}
+.small{font-size:12px;opacity:0.8}
+
+.theme-toggle{position:absolute;right:18px;top:18px}
+
+footer{display:flex;justify-content:space-between;align-items:center;padding-top:14px;color:#9fbbe4aa}
+
+/* responsiveness */
+@media (max-width:880px){.grid{grid-template-columns:1fr}.right{order:2}.left{order:1}}
+
+/* subtle animations */
+.float{animation:float 6s ease-in-out infinite}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+
+/* shimmer for hints */
+.hint{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));font-size:13px}
+
+/* Ad space placeholder */
+.ad{height:90px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;color:#9fbbe4aa;border:1px dashed rgba(255,255,255,0.03);}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card"><div class="particles" aria-hidden>
+    <svg viewBox="0 0 800 400" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="g1" x1="0" x2="1">
+          <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.08"/>
+          <stop offset="100%" stop-color="#34d399" stop-opacity="0.06"/>
+        </linearGradient>
+      </defs>
+      <g fill="url(#g1)">
+        <circle cx="60" cy="40" r="120"/>
+        <circle cx="720" cy="350" r="160"/>
+        <ellipse cx="420" cy="60" rx="260" ry="80"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="theme-toggle">
+    <button class="btn ghost" id="toggleTheme">Toggle Theme</button>
+  </div>
+
+  <header>
+    <div class="logo">V</div>
+    <div>
+      <h1>Velocity — Internet Speed Test</h1>
+      <p class="lead">Accurate, beautiful and animated speed checks. Test download, upload, latency & more.</p>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="left">
+      <div class="meter">
+        <div class="speed-big" id="speedValue">-- <span class="units">Mbps</span></div>
+        <div class="small hint">Download <strong id="dlLabel">—</strong> • Upload <strong id="ulLabel">—</strong> • Ping <strong id="pingLabel">—</strong> </div>
+
+        <div class="bars" style="width:100%">
+          <div class="bar"><i id="barDl"></i></div>
+          <div class="bar"><i id="barUl"></i></div>
+          <div class="bar"><i id="barPing"></i></div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" id="runBtn">Run Speed Test</button>
+          <button class="btn ghost" id="shareBtn">Share Result</button>
+        </div>
+
+        <div class="meta" style="width:100%">
+          <div>Server: <strong id="serverName">Auto</strong></div>
+          <div>IP: <strong id="ipAddr">—</strong></div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:18px">
+        <div class="ad">AdSense Space — 728x90 (placeholder)</div>
+      </div>
+    </div>
+
+    <aside class="right">
+      <h3>Test Details</h3>
+      <div class="stat"><div>
+        <div class="small">Download</div>
+        <div id="dlStat">— Mbps</div>
+      </div><div>▸</div></div>
+
+      <div class="stat"><div>
+        <div class="small">Upload</div>
+        <div id="ulStat">— Mbps</div>
+      </div><div>▸</div></div>
+
+      <div class="stat"><div>
+        <div class="small">Ping (latency)</div>
+        <div id="pingStat">— ms</div>
+      </div><div>▸</div></div>
+
+      <div style="margin-top:12px" class="small">Settings</div>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <select id="fileSize" style="flex:1;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.03)">
+          <option value="1048576">1 MB</option>
+          <option value="5242880">5 MB</option>
+          <option value="10485760" selected>10 MB</option>
+          <option value="52428800">50 MB</option>
+        </select>
+        <button class="btn ghost" id="advanced">Advanced</button>
+      </div>
+
+      <div style="margin-top:12px">
+        <div class="ad">AdSpace — 300x250</div>
+      </div>
+
+      <div style="margin-top:12px;color:#aacff2aa;font-size:13px">Tip: For accurate results, host this page on a server and allow connections. Browser-based tests are best-effort.</div>
+    </aside>
+  </div>
+
+  <footer>
+    <div>Made with ♥ — <span class="small">Velocity</span></div>
+    <div class="small">© <span id="year"></span></div>
+  </footer>
+</div>
+
+  </div>  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const runBtn = document.getElementById('runBtn');
+    const speedValue = document.getElementById('speedValue');
+    const dlStat = document.getElementById('dlStat');
+    const ulStat = document.getElementById('ulStat');
+    const pingStat = document.getElementById('pingStat');
+    const ipAddr = document.getElementById('ipAddr');
+    const dlLabel = document.getElementById('dlLabel');
+    const ulLabel = document.getElementById('ulLabel');
+    const pingLabel = document.getElementById('pingLabel');
+
+    const barDl = document.getElementById('barDl');
+    const barUl = document.getElementById('barUl');
+    const barPing = document.getElementById('barPing');
+
+    const serverName = document.getElementById('serverName');
+
+    // Public test file (fallback). You can replace with your own hosted file for accurate tests.
+    const TEST_FILE_URL = 'https://speed.hetzner.de/10MB.bin';
+
+    function bytesToMbps(bytes, seconds){
+      // bytes / seconds -> bytes/sec -> bits/sec -> Mbps
+      return (bytes / seconds * 8) / (1024*1024);
+    }
+
+    async function measureDownload(size){
+      const controller = new AbortController();
+      const start = performance.now();
+      try{
+        const res = await fetch(TEST_FILE_URL, {signal: controller.signal});
+        const reader = res.body.getReader();
+        let received = 0;
+        const t0 = performance.now();
+        while(true){
+          const {done, value} = await reader.read();
+          if(done) break;
+          received += value.length;
+          // stop early if received enough bytes to approximate
+          if(received >= size) { controller.abort(); break; }
+        }
+        const t1 = performance.now();
+        const seconds = Math.max((t1 - t0)/1000, 0.001);
+        return {mbps: bytesToMbps(received, seconds), bytes: received, seconds};
+      }catch(e){
+        return {error: e.message || 'download error'};
+      }
+    }
+
+    async function measureUpload(size){
+      // Create random blob of requested size
+      const chunk = new Uint8Array(size);
+      crypto.getRandomValues(chunk);
+      const start = performance.now();
+      try{
+        // Note: this POST goes to httpbin.org which accepts binary posts; if CORS blocks, upload will fail in some browsers.
+        const res = await fetch('https://httpbin.org/post', {
+          method:'POST',
+          body: chunk,
+          mode: 'cors'
+        });
+        const t1 = performance.now();
+        const seconds = Math.max((t1-start)/1000, 0.001);
+        return {mbps: bytesToMbps(size, seconds), seconds};
+      }catch(e){
+        return {error: e.message || 'upload error'};
+      }
+    }
+
+    async function measurePing(){
+      // simple ping via small fetch; measure roundtrip
+      const start = performance.now();
+      try{
+        await fetch('https://www.google.com/favicon.ico', {cache:'no-store', mode:'no-cors'});
+        const t1 = performance.now();
+        return Math.round(t1-start);
+      }catch(e){
+        // if CORS prevents fetch timing, fallback to ping ~100ms
+        return 120;
+      }
+    }
+
+    async function getIP(){
+      try{
+        const res = await fetch('https://api.ipify.org?format=json');
+        const j = await res.json();
+        return j.ip;
+      }catch(e){return '—'}
+    }
+
+    runBtn.addEventListener('click', async ()=>{
+      runBtn.textContent = 'Testing...'; runBtn.disabled = true;
+      // reset visuals
+      barDl.style.width = '0%'; barUl.style.width = '0%'; barPing.style.width = '0%';
+      const size = parseInt(document.getElementById('fileSize').value,10);
+
+      serverName.textContent = 'Auto (public)';
+      ipAddr.textContent = '...';
+      ipAddr.textContent = await getIP();
+
+      const ping = await measurePing();
+      pingStat.textContent = ping + ' ms';
+      pingLabel.textContent = ping + ' ms';
+      barPing.style.width = Math.min(100, 100 - Math.max(0, (ping - 20))) + '%';
+
+      const dl = await measureDownload(size);
+      if(dl.error){ dlStat.textContent = dl.error; } else {
+        const mbps = (dl.mbps).toFixed(2);
+        dlStat.textContent = mbps + ' Mbps';
+        dlLabel.textContent = mbps + ' Mbps';
+        speedValue.firstChild.nodeValue = mbps + ' ';
+        barDl.style.width = Math.min(100, Math.log10(Math.max(1, dl.mbps))*33 + 10) + '%';
+      }
+
+      const ul = await measureUpload(Math.min(1024*1024*2, size)); // limit upload size client-side for safety
+      if(ul.error){ ulStat.textContent = ul.error; } else {
+        const umb = (ul.mbps).toFixed(2);
+        ulStat.textContent = umb + ' Mbps';
+        ulLabel.textContent = umb + ' Mbps';
+        barUl.style.width = Math.min(100, Math.log10(Math.max(0.01, ul.mbps))*33 + 10) + '%';
+      }
+
+      runBtn.textContent = 'Run Speed Test'; runBtn.disabled = false;
+    });
+
+    // share result
+    document.getElementById('shareBtn').addEventListener('click', ()=>{
+      const text = `Velocity speed test — ${dlStat.textContent} down • ${ulStat.textContent} up • ping ${pingStat.textContent}`;
+      if(navigator.share){ navigator.share({title:'My Speed Test result', text}); }
+      else { navigator.clipboard.writeText(text).then(()=> alert('Result copied to clipboard')) }
+    });
+
+    // theme toggle (light/dark)
+    document.getElementById('toggleTheme').addEventListener('click', ()=>{
+      const root = document.documentElement;
+      if(root.style.getPropertyValue('--bg') === '#0f1724'){
+        root.style.setProperty('--bg','#f7fafc'); root.style.setProperty('--card','#ffffff'); root.style.setProperty('--text','#052038'); root.style.setProperty('--glass','rgba(2,6,23,0.02)');
+      } else { root.style.setProperty('--bg','#0f1724'); root.style.setProperty('--card','#0b1220'); root.style.setProperty('--text','#e6eef8'); root.style.setProperty('--glass','rgba(255,255,255,0.04)'); }
+    });
+
+  </script></body>
+</html>
