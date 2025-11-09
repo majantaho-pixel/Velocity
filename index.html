@@ -60,6 +60,7 @@
       top: 10px;
       left: 20px;
       z-index: 20;
+      text-shadow: 0 0 10px #00d2ff; /* Added glow */
     }
 
     .ad-container {
@@ -71,7 +72,7 @@
       color: #00d2ff;
       font-size: 14px;
       margin: 20px 0;
-      min-height: 90px; /* Ensures space even if ad fails to load */
+      min-height: 90px;
     }
 
     .top-ad { height: 90px; width: 100%; margin-top: 80px; margin-bottom: 30px; }
@@ -82,7 +83,6 @@
     #startBtn { transition: all 0.3s ease; }
     #startBtn.active { color: #00ffea; text-shadow: 0 0 15px #00ffe0; }
 
-    /* Hide ads on very small screens to avoid clutter */
     @media (max-width: 640px) {
       .right-ad { display: none; }
       .mid-ad { height: 150px; }
@@ -94,7 +94,7 @@
 
   <div class="futuristic-logo">Velocity</div>
 
-  <!-- Top Ad (High Visibility) -->
+  <!-- Top Ad -->
   <div class="ad-container top-ad z-10" data-ad-loaded="false">
     <ins class="adsbygoogle" style="display: block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="1111111111" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
@@ -117,7 +117,7 @@
     <div id="pingBox" class="stat-box">Ping: -- ms</div>
   </div>
 
-  <!-- Mid Ad (Strategic Placement) -->
+  <!-- Mid Ad -->
   <div class="ad-container mid-ad z-10" data-ad-loaded="false">
     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="5555555555" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
@@ -136,7 +136,7 @@
     </p>
   </section>
 
-  <!-- Bottom Ads (End-of-Page Revenue) -->
+  <!-- Bottom Ads -->
   <div class="ad-container bottom-ad z-10" data-ad-loaded="false">
     <ins class="adsbygoogle" style="display: block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="2222222222" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
@@ -144,7 +144,7 @@
     <ins class="adsbygoogle" style="display: block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="3333333333" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
 
-  <!-- Right Ad (Sidebar for Extra Revenue) -->
+  <!-- Right Ad -->
   <div class="ad-container right-ad z-10" data-ad-loaded="false">
     <ins class="adsbygoogle" style="display: inline-block; width: 160px; height: 600px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="4444444444"></ins>
   </div>
@@ -156,15 +156,15 @@
   <!-- Scripts -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <script>
-    // Google Analytics (Optional for Tracking)
+    // Google Analytics
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-XXXXXXXXX-X', 'auto'); // Replace with your GA ID
+    ga('create', 'UA-XXXXXXXXX-X', 'auto');
     ga('send', 'pageview');
 
-    // Optimized Ad Loading with Lazy Load and Error Handling
+    // Optimized Ad Loading
     function loadAds() {
       const adContainers = document.querySelectorAll('.ad-container');
       adContainers.forEach(container => {
@@ -175,16 +175,15 @@
             container.dataset.adLoaded = 'true';
           } catch (e) {
             console.warn('Ad failed to load:', e);
-            container.innerHTML = '<p>Ad temporarily unavailable.</p>'; // Fallback
+            container.innerHTML = '<p>Ad temporarily unavailable.</p>';
           }
         }
       });
     }
 
-    // Load ads on page load and scroll (lazy loading)
     window.addEventListener('load', loadAds);
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 200) loadAds(); // Load mid/bottom ads on scroll
+      if (window.scrollY > 200) loadAds();
     });
 
     const pulse = document.getElementById("pulse");
@@ -198,7 +197,6 @@
       startBtn.style.display = "none";
       startBtn.classList.add("active");
 
-      // Pulse animation size & dynamic color
       gsap.to(pulse, { scale: 1.2, repeat: -1, yoyo: true, duration: 0.6, ease: "power1.inOut" });
       let hue = 0;
       const colorAnim = gsap.to({}, {
@@ -219,6 +217,17 @@
       gsap.to(pulse, { scale: 1, duration: 0.3 });
       pulse.style.background = "linear-gradient(to-tr, from-cyan-400, to-blue-600)";
       readingLine.textContent = "✅ Test Complete!";
+      startBtn.textContent = "Reset"; // Added reset functionality
+      startBtn.style.display = "block";
+      startBtn.classList.remove("active");
+    }
+
+    function resetTest() {
+      downloadBox.textContent = "Download: -- Mbps";
+      uploadBox.textContent = "Upload: -- Mbps";
+      pingBox.textContent = "Ping: -- ms";
+      readingLine.textContent = "";
+      startBtn.textContent = "Start Test";
     }
 
     function simulatePhase(label, box, min, max, isPing = false) {
@@ -239,7 +248,14 @@
       });
     }
 
-    startBtn.addEventListener("click", startSpeedTest);
+    startBtn.addEventListener("click", () => {
+      if (startBtn.textContent === "Reset") {
+        resetTest();
+      } else {
+        startSpeedTest();
+      }
+    });
+
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
