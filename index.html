@@ -6,9 +6,14 @@
   <title>Velocity Internet Speed Test</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://unpkg.com https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline'; frame-src https://pagead2.googlesyndication.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://unpkg.com https://pagead2.googlesyndication.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; frame-src https://pagead2.googlesyndication.com;">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta name="description" content="Test your internet speed with Velocity: accurate download, upload, and ping measurements. Fast, free, and futuristic online speed test tool.">
+  <meta name="keywords" content="internet speed test, speed test online, download speed, upload speed, ping test, fast internet test, velocity speed test">
+  <meta name="author" content="Velocity">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://yourwebsite.com/speedtest"> <!-- Replace with your actual URL -->
 
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet"/>
 
@@ -65,6 +70,8 @@
       justify-content: center;
       color: #00d2ff;
       font-size: 14px;
+      margin: 20px 0;
+      min-height: 90px; /* Ensures space even if ad fails to load */
     }
 
     .top-ad { height: 90px; width: 100%; margin-top: 80px; margin-bottom: 30px; }
@@ -74,6 +81,12 @@
 
     #startBtn { transition: all 0.3s ease; }
     #startBtn.active { color: #00ffea; text-shadow: 0 0 15px #00ffe0; }
+
+    /* Hide ads on very small screens to avoid clutter */
+    @media (max-width: 640px) {
+      .right-ad { display: none; }
+      .mid-ad { height: 150px; }
+    }
   </style>
 </head>
 
@@ -81,8 +94,8 @@
 
   <div class="futuristic-logo">Velocity</div>
 
-  <!-- Top Ad -->
-  <div class="ad-container top-ad z-10">
+  <!-- Top Ad (High Visibility) -->
+  <div class="ad-container top-ad z-10" data-ad-loaded="false">
     <ins class="adsbygoogle" style="display: block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="1111111111" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
 
@@ -104,8 +117,8 @@
     <div id="pingBox" class="stat-box">Ping: -- ms</div>
   </div>
 
-  <!-- Mid Ad -->
-  <div class="ad-container mid-ad z-10">
+  <!-- Mid Ad (Strategic Placement) -->
+  <div class="ad-container mid-ad z-10" data-ad-loaded="false">
     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="5555555555" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
 
@@ -123,32 +136,55 @@
     </p>
   </section>
 
-  <!-- Bottom Ads -->
-  <div class="ad-container bottom-ad z-10">
+  <!-- Bottom Ads (End-of-Page Revenue) -->
+  <div class="ad-container bottom-ad z-10" data-ad-loaded="false">
     <ins class="adsbygoogle" style="display: block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="2222222222" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
-  <div class="ad-container bottom-ad z-10">
+  <div class="ad-container bottom-ad z-10" data-ad-loaded="false">
     <ins class="adsbygoogle" style="display: block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="3333333333" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
 
-  <!-- Right Ad -->
-  <div class="ad-container right-ad z-10">
+  <!-- Right Ad (Sidebar for Extra Revenue) -->
+  <div class="ad-container right-ad z-10" data-ad-loaded="false">
     <ins class="adsbygoogle" style="display: inline-block; width: 160px; height: 600px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="4444444444"></ins>
   </div>
 
   <footer class="absolute bottom-5 text-sm text-gray-400 z-10">
-    Made with ⚡ by Velocity
+    Made with ⚡ by Velocity | <a href="/privacy" class="text-cyan-300">Privacy Policy</a>
   </footer>
 
   <!-- Scripts -->
-  <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <script>
-    // Load all ads
-    window.addEventListener('load', () => {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-      document.querySelectorAll('ins.adsbygoogle').forEach(() => {
-        (adsbygoogle = window.adsbygoogle || []).push({});
+    // Google Analytics (Optional for Tracking)
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-XXXXXXXXX-X', 'auto'); // Replace with your GA ID
+    ga('send', 'pageview');
+
+    // Optimized Ad Loading with Lazy Load and Error Handling
+    function loadAds() {
+      const adContainers = document.querySelectorAll('.ad-container');
+      adContainers.forEach(container => {
+        const ins = container.querySelector('ins');
+        if (ins && !container.dataset.adLoaded) {
+          try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            container.dataset.adLoaded = 'true';
+          } catch (e) {
+            console.warn('Ad failed to load:', e);
+            container.innerHTML = '<p>Ad temporarily unavailable.</p>'; // Fallback
+          }
+        }
       });
+    }
+
+    // Load ads on page load and scroll (lazy loading)
+    window.addEventListener('load', loadAds);
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 200) loadAds(); // Load mid/bottom ads on scroll
     });
 
     const pulse = document.getElementById("pulse");
