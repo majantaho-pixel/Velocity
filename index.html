@@ -1,98 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Velocity Internet Speed Test</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet"/>
+
   <style>
     body {
-      background: radial-gradient(circle at center, #001f3f, #000814);
-      font-family: 'Poppins', sans-serif;
-      color: #00e0ff;
-      text-align: center;
-      padding: 0;
-      margin: 0;
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 1rem;
-      padding: 1rem;
-      box-shadow: 0 0 10px rgba(0, 224, 255, 0.2);
-      margin: 10px auto;
-      max-width: 400px;
-    }
-    .ad-box {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px dashed rgba(0, 224, 255, 0.5);
-      color: #00e0ff;
-      padding: 10px;
-      margin: 10px auto;
-      border-radius: 10px;
-      max-width: 400px;
+      background: radial-gradient(circle at center, #0b1120, #020617);
+      overflow-x: hidden;
+      font-family: 'Orbitron', sans-serif;
     }
 
-    /* ✅ Mobile fix for top ad overlap */
+    .bg-flow {
+      background: linear-gradient(120deg, #00d2ff, #3a47d5);
+      background-size: 200% 200%;
+      animation: gradientFlow 6s ease infinite;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .glow {
+      box-shadow: 0 0 40px 10px rgba(0, 208, 255, 0.4);
+    }
+
+    .stat-box {
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid #00d2ff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      width: 150px;
+      margin: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    .futuristic-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00d2ff;
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      z-index: 20;
+      text-shadow: 0 0 10px #00d2ff;
+    }
+
+    .ad-container {
+      background: #111;
+      border: 2px dashed #00d2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #00d2ff;
+      font-size: 14px;
+      margin: 20px 0;
+      min-height: 90px;
+    }
+
+    .top-ad { height: 90px; width: 100%; margin-top: 80px; margin-bottom: 30px; }
+    .bottom-ad { height: 90px; width: 100%; margin-top: 40px; }
+    .mid-ad { height: 250px; width: 100%; margin-top: 50px; margin-bottom: 50px; }
+
+    .right-ad {
+      width: 160px;
+      height: 600px;
+      position: relative;
+      margin-top: 40px;
+      align-self: flex-end;
+    }
+
+    #startBtn { transition: all 0.3s ease; }
+    #startBtn.active { color: #00ffea; text-shadow: 0 0 15px #00ffe0; }
+
+    /* ✅ Responsive Fix for Mobile */
+    @media (max-width: 1024px) {
+      .right-ad { display: none; }
+    }
+
     @media (max-width: 768px) {
-      .top-ad {
-        margin-top: 70px; /* move top ad down slightly */
+      .top-ad { margin-top: 130px; } /* 👈 تھوڑا نیچے کیا */
+      .bottom-ad:last-of-type { margin-bottom: 110px; } /* 👈 نیچے والی ad تھوڑی اوپر */
+      .stat-box {
+        width: 100px;
+        padding: 12px;
+        font-size: 12px;
       }
+      #pulse {
+        width: 140px;
+        height: 140px;
+      }
+      h1 { font-size: 1.8rem; }
+      .ad-container { border-width: 1px; margin: 10px 0; }
+      section { width: 90%; padding: 14px; }
     }
   </style>
 </head>
-<body>
 
-  <div class="top-ad ad-box">
-    Top Ad
+<body class="flex flex-col items-center justify-start min-h-screen text-white relative overflow-x-hidden">
+
+  <div class="futuristic-logo">Velocity</div>
+
+  <!-- Top Ad -->
+  <div class="ad-container top-ad z-10"><p>Top Ad</p></div>
+
+  <div class="absolute inset-0 bg-flow opacity-20 -z-10"></div>
+
+  <h1 class="text-4xl md:text-5xl font-bold mb-4 z-10 text-center">
+    🚀 <span class="text-cyan-400">Speed Test</span>
+  </h1>
+
+  <div id="readingLine" class="text-lg text-cyan-300 mb-6 h-6 z-10 text-center"></div>
+
+  <div id="pulse" class="w-48 h-48 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center glow relative z-10">
+    <button id="startBtn" class="text-white text-xl font-bold uppercase tracking-wide">Start Test</button>
   </div>
 
-  <div class="card mt-4">
-    <h1 class="text-3xl font-bold text-cyan-400 mb-2">🚀 Speed Test</h1>
-    <p class="text-green-400 font-semibold mb-4">✅ Test Complete!</p>
-    <button class="bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-2 rounded-full shadow-lg hover:scale-105 transition">RESET</button>
-
-    <div class="flex justify-center gap-2 mt-4">
-      <div class="card">
-        <p>Download:<br><span class="text-white font-semibold">112.0 Mbps</span></p>
-      </div>
-      <div class="card">
-        <p>Upload:<br><span class="text-white font-semibold">53.0 Mbps</span></p>
-      </div>
-      <div class="card">
-        <p>Ping:<br><span class="text-white font-semibold">36.0 ms</span></p>
-      </div>
-    </div>
+  <div class="flex flex-wrap justify-center mt-10 z-10">
+    <div id="downloadBox" class="stat-box">Download: -- Mbps</div>
+    <div id="uploadBox" class="stat-box">Upload: -- Mbps</div>
+    <div id="pingBox" class="stat-box">Ping: -- ms</div>
   </div>
 
-  <div class="ad-box">
-    Middle Ad
-  </div>
+  <!-- Mid Ad -->
+  <div class="ad-container mid-ad z-10"><p>Middle Ad</p></div>
 
-  <div class="card">
-    <h2 class="text-2xl font-bold text-cyan-400 mb-2">About Velocity</h2>
-    <p class="text-gray-300 text-sm leading-relaxed">
-      Velocity is a fast and reliable online speed testing tool that helps you check your internet connection in real-time.
+  <!-- Right Ad (Visible only on Desktop) -->
+  <div class="ad-container right-ad z-10"><p>Right Side Ad</p></div>
+
+  <!-- About -->
+  <section class="w-11/12 md:w-3/4 text-center bg-black/40 border border-cyan-500 rounded-xl p-6 mt-6 mb-10 z-10 backdrop-blur-md">
+    <h2 class="text-2xl font-bold text-cyan-400 mb-3">About Velocity</h2>
+    <p class="text-gray-300 text-sm mb-4">
+      Velocity is a fast and reliable online speed testing tool that helps you check your internet connection in real-time. 
       We ensure accurate results for download, upload, and ping speeds using modern measurement algorithms.
     </p>
-    <h3 class="text-lg font-bold text-cyan-400 mt-3">Privacy & Copyright</h3>
-    <p class="text-gray-400 text-xs mt-1">
-      We do not store or share any user data. All tests are performed anonymously for better privacy.
-      © 2025 Velocity. All rights reserved.
+    <h3 class="text-lg font-semibold text-cyan-300 mb-2">Privacy & Copyright</h3>
+    <p class="text-gray-400 text-xs">
+      We do not store or share any user data. All tests are performed anonymously for better privacy. 
+      © <span id="year"></span> Velocity. All rights reserved.
     </p>
-  </div>
+  </section>
 
-  <div class="ad-box">
-    Bottom Ad 1
-  </div>
+  <!-- Bottom Ads -->
+  <div class="ad-container bottom-ad z-10"><p>Bottom Ad 1</p></div>
+  <div class="ad-container bottom-ad z-10"><p>Bottom Ad 2</p></div>
 
-  <div class="ad-box">
-    Bottom Ad 2
-  </div>
+  <footer class="absolute bottom-5 text-sm text-gray-400 z-10">
+    Powered by ⚡ Velocity | <a href="/privacy" class="text-cyan-300">Privacy Policy</a>
+  </footer>
 
-  <p class="text-gray-400 text-xs mt-4 mb-6">
-    Powered by ⚡ <span class="text-cyan-400 font-bold">Velocity</span> | Privacy Policy
-  </p>
+  <script>
+    const pulse = document.getElementById("pulse");
+    const startBtn = document.getElementById("startBtn");
+    const downloadBox = document.getElementById("downloadBox");
+    const uploadBox = document.getElementById("uploadBox");
+    const pingBox = document.getElementById("pingBox");
+    const readingLine = document.getElementById("readingLine");
 
+    async function startSpeedTest() {
+      startBtn.style.display = "none";
+      startBtn.classList.add("active");
+
+      gsap.to(pulse, { scale: 1.2, repeat: -1, yoyo: true, duration: 0.6, ease: "power1.inOut" });
+      let hue = 0;
+      const colorAnim = gsap.to({}, {
+        duration: 6,
+        repeat: -1,
+        onUpdate: () => {
+          hue = (hue + 2) % 360;
+          pulse.style.background = `linear-gradient(135deg, hsl(${hue}, 100%, 60%), hsl(${(hue+60)%360}, 100%, 60%))`;
+        },
+      });
+
+      await simulatePhase("Download", downloadBox, 40, 120);
+      await simulatePhase("Upload", uploadBox, 10, 60);
+      await simulatePhase("Ping", pingBox, 10, 40, true);
+
+      gsap.killTweensOf(pulse);
+      colorAnim.kill();
+      gsap.to(pulse, { scale: 1, duration: 0.3 });
+      readingLine.textContent = "✅ Test Complete!";
+      startBtn.textContent = "Reset";
+      startBtn.style.display = "block";
+      startBtn.classList.remove("active");
+    }
+
+    function resetTest() {
+      downloadBox.textContent = "Download: -- Mbps";
+      uploadBox.textContent = "Upload: -- Mbps";
+      pingBox.textContent = "Ping: -- ms";
+      readingLine.textContent = "";
+      startBtn.textContent = "Start Test";
+    }
+
+    function simulatePhase(label, box, min, max, isPing = false) {
+      return new Promise(resolve => {
+        let value = 0;
+        const target = Math.floor(Math.random() * (max - min)) + min;
+        readingLine.textContent = `Testing ${label}...`;
+        const interval = setInterval(() => {
+          value += Math.random() * (isPing ? 3 : 6);
+          if (value > target) value = target;
+          readingLine.textContent = `${label}: ${value.toFixed(1)} ${isPing ? "ms" : "Mbps"}`;
+          if (value >= target) {
+            clearInterval(interval);
+            box.textContent = `${label}: ${target.toFixed(1)} ${isPing ? "ms" : "Mbps"}`;
+            setTimeout(() => resolve(), 800);
+          }
+        }, 80);
+      });
+    }
+
+    startBtn.addEventListener("click", () => {
+      if (startBtn.textContent === "Reset") resetTest();
+      else startSpeedTest();
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
