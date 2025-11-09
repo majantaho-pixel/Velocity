@@ -71,7 +71,6 @@
     .bottom-ad { height: 90px; width: 100%; margin-top: 40px; }
     .mid-ad { height: 250px; width: 100%; margin-top: 50px; margin-bottom: 50px; }
 
-    /* ✅ FIXED: Right ad now below main content */
     .right-ad {
       width: 160px;
       height: 600px;
@@ -83,8 +82,38 @@
     #startBtn { transition: all 0.3s ease; }
     #startBtn.active { color: #00ffea; text-shadow: 0 0 15px #00ffe0; }
 
+    /* ✅ Responsive Fix for Mobile */
     @media (max-width: 1024px) {
-      .right-ad { display: none; }
+      .right-ad {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stat-box {
+        width: 100px;
+        padding: 12px;
+        font-size: 12px;
+      }
+      #pulse {
+        width: 140px;
+        height: 140px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .top-ad, .bottom-ad, .mid-ad {
+        min-height: 60px;
+        font-size: 12px;
+      }
+      .ad-container {
+        border-width: 1px;
+        margin: 10px 0;
+      }
+      section {
+        width: 90%;
+        padding: 14px;
+      }
     }
   </style>
 </head>
@@ -94,37 +123,31 @@
   <div class="futuristic-logo">Velocity</div>
 
   <!-- Top Ad -->
-  <div class="ad-container top-ad z-10">
-    <p>Top Ad</p>
-  </div>
+  <div class="ad-container top-ad z-10"><p>Top Ad</p></div>
 
   <div class="absolute inset-0 bg-flow opacity-20 -z-10"></div>
 
-  <h1 class="text-4xl md:text-5xl font-bold mb-4 z-10">
+  <h1 class="text-4xl md:text-5xl font-bold mb-4 z-10 text-center">
     🚀 <span class="text-cyan-400">Speed Test</span>
   </h1>
 
-  <div id="readingLine" class="text-lg text-cyan-300 mb-6 h-6 z-10"></div>
+  <div id="readingLine" class="text-lg text-cyan-300 mb-6 h-6 z-10 text-center"></div>
 
   <div id="pulse" class="w-48 h-48 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center glow relative z-10">
     <button id="startBtn" class="text-white text-xl font-bold uppercase tracking-wide">Start Test</button>
   </div>
 
-  <div class="flex mt-10 z-10">
+  <div class="flex flex-wrap justify-center mt-10 z-10">
     <div id="downloadBox" class="stat-box">Download: -- Mbps</div>
     <div id="uploadBox" class="stat-box">Upload: -- Mbps</div>
     <div id="pingBox" class="stat-box">Ping: -- ms</div>
   </div>
 
   <!-- Mid Ad -->
-  <div class="ad-container mid-ad z-10">
-    <p>Middle Ad</p>
-  </div>
+  <div class="ad-container mid-ad z-10"><p>Middle Ad</p></div>
 
-  <!-- Right Ad (Moved down, no overlap) -->
-  <div class="ad-container right-ad z-10">
-    <p>Right Side Ad</p>
-  </div>
+  <!-- Right Ad (Visible only on Desktop) -->
+  <div class="ad-container right-ad z-10"><p>Right Side Ad</p></div>
 
   <!-- About -->
   <section class="w-11/12 md:w-3/4 text-center bg-black/40 border border-cyan-500 rounded-xl p-6 mt-6 mb-10 z-10 backdrop-blur-md">
