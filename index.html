@@ -6,10 +6,11 @@
   <title>Velocity Internet Speed Test</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
-
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline'; frame-src https://pagead2.googlesyndication.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://unpkg.com https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline'; frame-src https://pagead2.googlesyndication.com;">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet"/>
 
   <style>
     body {
@@ -66,54 +67,23 @@
       font-size: 14px;
     }
 
-    .top-ad {
-      height: 90px;
-      width: 100%;
-      margin-top: 80px;
-      margin-bottom: 30px;
-    }
+    .top-ad { height: 90px; width: 100%; margin-top: 80px; margin-bottom: 30px; }
+    .bottom-ad { height: 90px; width: 100%; margin-top: 40px; }
+    .mid-ad { height: 250px; width: 100%; margin-top: 50px; margin-bottom: 50px; }
+    .right-ad { width: 160px; height: 600px; position: absolute; top: 400px; right: 10px; }
 
-    .bottom-ad {
-      height: 90px;
-      width: 100%;
-      margin-top: 40px;
-    }
-
-    .mid-ad {
-      height: 250px;
-      width: 100%;
-      margin-top: 50px;
-      margin-bottom: 50px;
-    }
-
-    .right-ad {
-      width: 160px;
-      height: 600px;
-      position: absolute;
-      top: 400px;
-      right: 10px;
-    }
+    #startBtn { transition: all 0.3s ease; }
+    #startBtn.active { color: #00ffea; text-shadow: 0 0 15px #00ffe0; }
   </style>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap"
-    rel="stylesheet"
-  />
 </head>
 
-<body
-  class="flex flex-col items-center justify-start min-h-screen text-white relative overflow-x-hidden"
->
+<body class="flex flex-col items-center justify-start min-h-screen text-white relative overflow-x-hidden">
+
   <div class="futuristic-logo">Velocity</div>
 
+  <!-- Top Ad -->
   <div class="ad-container top-ad z-10">
-    <ins
-      class="adsbygoogle"
-      style="display: block"
-      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-      data-ad-slot="1111111111"
-      data-ad-format="auto"
-      data-full-width-responsive="true"
-    ></ins>
+    <ins class="adsbygoogle" style="display: block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="1111111111" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
 
   <div class="absolute inset-0 bg-flow opacity-20 -z-10"></div>
@@ -122,19 +92,10 @@
     🚀 <span class="text-cyan-400">Speed Test</span>
   </h1>
 
-  <!-- Reading line area -->
   <div id="readingLine" class="text-lg text-cyan-300 mb-6 h-6 z-10"></div>
 
-  <div
-    id="pulse"
-    class="w-48 h-48 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center glow relative z-10"
-  >
-    <button
-      id="startBtn"
-      class="text-white text-xl font-bold uppercase tracking-wide"
-    >
-      Start Test
-    </button>
+  <div id="pulse" class="w-48 h-48 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center glow relative z-10">
+    <button id="startBtn" class="text-white text-xl font-bold uppercase tracking-wide">Start Test</button>
   </div>
 
   <div class="flex mt-10 z-10">
@@ -143,20 +104,12 @@
     <div id="pingBox" class="stat-box">Ping: -- ms</div>
   </div>
 
-  <!-- ✅ POINT #3 : Mid Adsense Ad -->
+  <!-- Mid Ad -->
   <div class="ad-container mid-ad z-10">
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-      data-ad-slot="5555555555"
-      data-ad-format="auto"
-      data-full-width-responsive="true"
-    ></ins>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="5555555555" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
-  <!-- ✅ END Point #3 -->
 
-  <!-- ✅ POINT #4 : Site Info / Privacy / Copyright -->
+  <!-- About / Privacy -->
   <section class="w-11/12 md:w-3/4 text-center bg-black/40 border border-cyan-500 rounded-xl p-6 mt-6 mb-10 z-10 backdrop-blur-md">
     <h2 class="text-2xl font-bold text-cyan-400 mb-3">About Velocity</h2>
     <p class="text-gray-300 text-sm mb-4">
@@ -169,45 +122,34 @@
       © <span id="year"></span> Velocity. All rights reserved.
     </p>
   </section>
-  <!-- ✅ END Point #4 -->
 
+  <!-- Bottom Ads -->
   <div class="ad-container bottom-ad z-10">
-    <ins
-      class="adsbygoogle"
-      style="display: block"
-      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-      data-ad-slot="2222222222"
-      data-ad-format="auto"
-      data-full-width-responsive="true"
-    ></ins>
+    <ins class="adsbygoogle" style="display: block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="2222222222" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+  <div class="ad-container bottom-ad z-10">
+    <ins class="adsbygoogle" style="display: block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="3333333333" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
 
-  <div class="ad-container bottom-ad z-10">
-    <ins
-      class="adsbygoogle"
-      style="display: block"
-      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-      data-ad-slot="3333333333"
-      data-ad-format="auto"
-      data-full-width-responsive="true"
-    ></ins>
-  </div>
-
+  <!-- Right Ad -->
   <div class="ad-container right-ad z-10">
-    <ins
-      class="adsbygoogle"
-      style="display: inline-block; width: 160px; height: 600px"
-      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-      data-ad-slot="4444444444"
-    ></ins>
+    <ins class="adsbygoogle" style="display: inline-block; width: 160px; height: 600px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="4444444444"></ins>
   </div>
 
   <footer class="absolute bottom-5 text-sm text-gray-400 z-10">
     Made with ⚡ by Velocity
   </footer>
 
+  <!-- Scripts -->
+  <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script>
   <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
+    // Load all ads
+    window.addEventListener('load', () => {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      document.querySelectorAll('ins.adsbygoogle').forEach(() => {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      });
+    });
 
     const pulse = document.getElementById("pulse");
     const startBtn = document.getElementById("startBtn");
@@ -218,12 +160,18 @@
 
     async function startSpeedTest() {
       startBtn.style.display = "none";
-      gsap.to(pulse, {
-        scale: 1.2,
+      startBtn.classList.add("active");
+
+      // Pulse animation size & dynamic color
+      gsap.to(pulse, { scale: 1.2, repeat: -1, yoyo: true, duration: 0.6, ease: "power1.inOut" });
+      let hue = 0;
+      const colorAnim = gsap.to({}, {
+        duration: 6,
         repeat: -1,
-        yoyo: true,
-        duration: 0.6,
-        ease: "power1.inOut",
+        onUpdate: () => {
+          hue = (hue + 2) % 360;
+          pulse.style.background = `linear-gradient(135deg, hsl(${hue}, 100%, 60%), hsl(${(hue+60)%360}, 100%, 60%))`;
+        },
       });
 
       await simulatePhase("Download", downloadBox, 40, 120);
@@ -231,30 +179,24 @@
       await simulatePhase("Ping", pingBox, 10, 40, true);
 
       gsap.killTweensOf(pulse);
+      colorAnim.kill();
       gsap.to(pulse, { scale: 1, duration: 0.3 });
+      pulse.style.background = "linear-gradient(to-tr, from-cyan-400, to-blue-600)";
       readingLine.textContent = "✅ Test Complete!";
     }
 
     function simulatePhase(label, box, min, max, isPing = false) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         let value = 0;
         const target = Math.floor(Math.random() * (max - min)) + min;
         readingLine.textContent = `Testing ${label}...`;
         const interval = setInterval(() => {
           value += Math.random() * (isPing ? 3 : 6);
           if (value > target) value = target;
-          readingLine.textContent = `${label}: ${value.toFixed(1)} ${
-            isPing ? "ms" : "Mbps"
-          }`;
-
-          const hue = Math.min(value * 2, 240);
-          pulse.style.background = `linear-gradient(135deg, hsl(${hue}, 100%, 60%), #00bfff)`;
-
+          readingLine.textContent = `${label}: ${value.toFixed(1)} ${isPing ? "ms" : "Mbps"}`;
           if (value >= target) {
             clearInterval(interval);
-            box.textContent = `${label}: ${target.toFixed(1)} ${
-              isPing ? "ms" : "Mbps"
-            }`;
+            box.textContent = `${label}: ${target.toFixed(1)} ${isPing ? "ms" : "Mbps"}`;
             setTimeout(() => resolve(), 800);
           }
         }, 80);
@@ -262,14 +204,7 @@
     }
 
     startBtn.addEventListener("click", startSpeedTest);
-
-    // ✅ Update copyright year dynamically
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
-
-  <script
-    async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-  ></script>
 </body>
 </html>
