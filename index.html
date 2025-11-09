@@ -84,18 +84,12 @@
 
     /* ✅ Responsive Fix for Mobile */
     @media (max-width: 1024px) {
-      .right-ad {
-        display: none;
-      }
+      .right-ad { display: none; }
     }
 
     @media (max-width: 768px) {
-      .top-ad {
-        margin-top: 110px;  /* 👈 Top Ad تھوڑی نیچے */
-      }
-      .bottom-ad {
-        margin-bottom: 90px; /* 👈 Bottom Ad تھوڑی اوپر */
-      }
+      .top-ad { margin-top: 130px; } /* 👈 تھوڑا نیچے کیا */
+      .bottom-ad:last-of-type { margin-bottom: 110px; } /* 👈 نیچے والی ad تھوڑی اوپر */
       .stat-box {
         width: 100px;
         padding: 12px;
@@ -105,17 +99,9 @@
         width: 140px;
         height: 140px;
       }
-      h1 {
-        font-size: 1.8rem;
-      }
-      .ad-container {
-        border-width: 1px;
-        margin: 10px 0;
-      }
-      section {
-        width: 90%;
-        padding: 14px;
-      }
+      h1 { font-size: 1.8rem; }
+      .ad-container { border-width: 1px; margin: 10px 0; }
+      section { width: 90%; padding: 14px; }
     }
   </style>
 </head>
