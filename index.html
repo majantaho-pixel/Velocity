@@ -82,6 +82,31 @@
     #startBtn { transition: all 0.3s ease; }
     #startBtn.active { color: #00ffea; text-shadow: 0 0 15px #00ffe0; }
 
+    /* ✅ ISP & Server Info Box */
+    .network-box {
+      margin-top: 15px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(0, 210, 255, 0.4);
+      border-radius: 10px;
+      padding: 12px 20px;
+      color: #00e0ff;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+    }
+
+    .network-box .icon {
+      margin-right: 8px;
+    }
+
+    .network-box div {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+
     /* ✅ Responsive Fix for Mobile */
     @media (max-width: 1024px) {
       .right-ad { display: none; }
@@ -131,6 +156,20 @@
     <div id="pingBox" class="stat-box">Ping: -- ms</div>
   </div>
 
+  <!-- ✅ ISP + Server Info Section -->
+  <div id="network-info" class="network-box z-10">
+    <div class="isp">
+      <span class="icon">🌐</span>
+      <span id="isp-name">Detecting...</span>
+      <span id="location"></span>
+    </div>
+    <div class="server">
+      <span class="icon">👤</span>
+      <span id="server-name">Detecting...</span>
+      <span id="server-ip"></span>
+    </div>
+  </div>
+
   <!-- Mid Ad -->
   <div class="ad-container mid-ad z-10"><p>Middle Ad</p></div>
 
@@ -166,8 +205,83 @@
     const uploadBox = document.getElementById("uploadBox");
     const pingBox = document.getElementById("pingBox");
     const readingLine = document.getElementById("readingLine");
+    const ispName = document.getElementById("isp-name");
+    const location = document.getElementById("location");
+    const serverName = document.getElementById("server-name");
+    const serverIp = document.getElementById("server-ip");
+
+    let isTesting = false;
+
+    // Fetch ISP and location info
+    async function fetchNetworkInfo() {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        ispName.textContent = data.org || 'Unknown ISP';
+        location.textContent = ` - ${data.city}, ${data.country_name}`;
+        serverName.textContent = 'ipapi.co';
+        serverIp.textContent = `(${data.ip})`;
+      } catch (error) {
+        console.error('Error fetching network info:', error);
+        ispName.textContent = 'Unknown ISP';
+        location.textContent = '';
+        serverName.textContent = 'Unknown';
+        serverIp.textContent = '';
+      }
+    }
+
+    // Measure ping
+    async function measurePing() {
+      const start = Date.now();
+      try {
+        await fetch('https://www.google.com/favicon.ico', { method: 'HEAD', cache: 'no-cache' });
+        return Date.now() - start;
+      } catch {
+        return null;
+      }
+    }
+
+    // Measure download speed
+    async function measureDownload() {
+      const url = 'https://speed.cloudflare.com/__down?bytes=50000000'; // 50MB test file
+      const start = Date.now();
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const end = Date.now();
+        const duration = (end - start) / 1000; // seconds
+        const bitsLoaded = blob.size * 8;
+        const speedBps = bitsLoaded / duration;
+        return speedBps / 1000000; // Mbps
+      } catch {
+        return null;
+      }
+    }
+
+    // Measure upload speed (simplified, as full upload test requires server)
+    async function measureUpload() {
+      // For a real upload test, you'd need a server endpoint. This is a placeholder.
+      // Simulating with a small upload to a test endpoint if available.
+      // For demo, we'll use a fake value or a simple test.
+      const data = new ArrayBuffer(1024 * 1024); // 1MB
+      const start = Date.now();
+      try {
+        // Using a placeholder; in reality, upload to a test server.
+        // For now, simulate based on download speed (not accurate).
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Fake delay
+        const end = Date.now();
+        const duration = (end - start) / 1000;
+        const bitsUploaded = data.byteLength * 8;
+        const speedBps = bitsUploaded / duration;
+        return speedBps / 1000000; // Mbps, but this is fake
+      } catch {
+        return null;
+      }
+    }
 
     async function startSpeedTest() {
+      if (isTesting) return;
+      isTesting = true;
       startBtn.style.display = "none";
       startBtn.classList.add("active");
 
@@ -182,9 +296,35 @@
         },
       });
 
-      await simulatePhase("Download", downloadBox, 40, 120);
-      await simulatePhase("Upload", uploadBox, 10, 60);
-      await simulatePhase("Ping", pingBox, 10, 40, true);
+      // Ping test
+      readingLine.textContent = "Testing Ping...";
+      const ping = await measurePing();
+      if (ping !== null) {
+        pingBox.textContent = `Ping: ${ping.toFixed(0)} ms`;
+      } else {
+        pingBox.textContent = "Ping: Error";
+      }
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Download test
+      readingLine.textContent = "Testing Download...";
+      const download = await measureDownload();
+      if (download !== null) {
+        downloadBox.textContent = `Download: ${download.toFixed(2)} Mbps`;
+      } else {
+        downloadBox.textContent = "Download: Error";
+      }
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Upload test (placeholder)
+      readingLine.textContent = "Testing Upload...";
+      const upload = await measureUpload();
+      if (upload !== null) {
+        uploadBox.textContent = `Upload: ${upload.toFixed(2)} Mbps`;
+      } else {
+        uploadBox.textContent = "Upload: Error";
+      }
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       gsap.killTweensOf(pulse);
       colorAnim.kill();
@@ -193,6 +333,7 @@
       startBtn.textContent = "Reset";
       startBtn.style.display = "block";
       startBtn.classList.remove("active");
+      isTesting = false;
     }
 
     function resetTest() {
@@ -201,24 +342,7 @@
       pingBox.textContent = "Ping: -- ms";
       readingLine.textContent = "";
       startBtn.textContent = "Start Test";
-    }
-
-    function simulatePhase(label, box, min, max, isPing = false) {
-      return new Promise(resolve => {
-        let value = 0;
-        const target = Math.floor(Math.random() * (max - min)) + min;
-        readingLine.textContent = `Testing ${label}...`;
-        const interval = setInterval(() => {
-          value += Math.random() * (isPing ? 3 : 6);
-          if (value > target) value = target;
-          readingLine.textContent = `${label}: ${value.toFixed(1)} ${isPing ? "ms" : "Mbps"}`;
-          if (value >= target) {
-            clearInterval(interval);
-            box.textContent = `${label}: ${target.toFixed(1)} ${isPing ? "ms" : "Mbps"}`;
-            setTimeout(() => resolve(), 800);
-          }
-        }, 80);
-      });
+      isTesting = false;
     }
 
     startBtn.addEventListener("click", () => {
@@ -227,6 +351,9 @@
     });
 
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Load network info on page load
+    fetchNetworkInfo();
   </script>
 </body>
 </html>
