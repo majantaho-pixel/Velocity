@@ -9,164 +9,38 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
   <style>
-    /* Global Styles */
-    body {
-      background: radial-gradient(circle at center, #0b1120, #020617);
-      overflow-x: hidden;
-      font-family: 'Orbitron', sans-serif;
-      color: white;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-    body.light-mode {
-      background: radial-gradient(circle at center, #f0f4f8, #e2e8f0);
-      color: #1a202c;
-    }
-
-    /* Background Animation */
-    .bg-flow {
-      background: linear-gradient(120deg, #00d2ff, #3a47d5);
-      background-size: 200% 200%;
-      animation: gradientFlow 6s ease infinite;
-    }
-    @keyframes gradientFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    /* Effects */
-    .glow {
-      box-shadow: 0 0 40px 10px rgba(0, 208, 255, 0.4);
-    }
-    .glow:hover, .glow:focus {
-      box-shadow: 0 0 60px 15px rgba(0, 208, 255, 0.6);
-    }
-    body.light-mode .glow {
-      box-shadow: 0 0 40px 10px rgba(58, 71, 213, 0.4);
-    }
-    body.light-mode .glow:hover, body.light-mode .glow:focus {
-      box-shadow: 0 0 60px 15px rgba(58, 71, 213, 0.6);
-    }
-
-    /* Stat Boxes */
-    .stat-box {
-      background: rgba(0, 0, 0, 0.5);
-      border: 2px solid #00d2ff;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      width: 150px;
-      margin: 10px;
-      backdrop-filter: blur(10px);
-      transition: transform 0.2s ease;
-    }
+    body { background: radial-gradient(circle at center, #0b1120, #020617); overflow-x: hidden; font-family: 'Orbitron', sans-serif; color: white; transition: background 0.3s ease, color 0.3s ease; }
+    body.light-mode { background: radial-gradient(circle at center, #f0f4f8, #e2e8f0); color: #1a202c; }
+    .bg-flow { background: linear-gradient(120deg, #00d2ff, #3a47d5); background-size: 200% 200%; animation: gradientFlow 6s ease infinite; }
+    @keyframes gradientFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    .glow { box-shadow: 0 0 40px 10px rgba(0, 208, 255, 0.4); }
+    .glow:hover, .glow:focus { box-shadow: 0 0 60px 15px rgba(0, 208, 255, 0.6); }
+    body.light-mode .glow { box-shadow: 0 0 40px 10px rgba(58, 71, 213, 0.4); }
+    body.light-mode .glow:hover, body.light-mode .glow:focus { box-shadow: 0 0 60px 15px rgba(58, 71, 213, 0.6); }
+    .stat-box { background: rgba(0, 0, 0, 0.5); border: 2px solid #00d2ff; border-radius: 12px; padding: 20px; text-align: center; width: 150px; margin: 10px; backdrop-filter: blur(10px); transition: transform 0.2s ease; }
     .stat-box:hover { transform: scale(1.05); }
-    body.light-mode .stat-box {
-      background: rgba(255, 255, 255, 0.8);
-      border-color: #3a47d5;
-      color: #1a202c;
-    }
-
-    /* Logo */
-    .futuristic-logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #00d2ff;
-      position: absolute;
-      top: 10px;
-      left: 20px;
-      z-index: 20;
-      text-shadow: 0 0 10px #00d2ff;
-      letter-spacing: 1px;
-    }
-    body.light-mode .futuristic-logo {
-      color: #3a47d5;
-      text-shadow: none;
-    }
-
-    /* Ads */
-    .ad-container {
-      background: #111;
-      border: 2px dashed #00d2ff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #00d2ff;
-      font-size: 14px;
-      margin: 20px 0;
-      min-height: 90px;
-      border-radius: 10px;
-    }
-    body.light-mode .ad-container {
-      background: #e2e8f0;
-      border-color: #3a47d5;
-      color: #3a47d5;
-    }
-
-    .top-ad { height: 90px; width: 80%; margin-top: 90px; margin-bottom: 30px; }
-    .bottom-ad { height: 90px; width: 90%; margin-top: 40px; }
-    .mid-ad { height: 250px; width: 90%; margin: 50px 0; }
+    body.light-mode .stat-box { background: rgba(255, 255, 255, 0.8); border-color: #3a47d5; color: #1a202c; }
+    .futuristic-logo { font-size: 1.5rem; font-weight: bold; color: #00d2ff; position: absolute; top: 10px; left: 20px; z-index: 20; text-shadow: 0 0 10px #00d2ff; letter-spacing: 1px; }
+    body.light-mode .futuristic-logo { color: #3a47d5; text-shadow: none; }
+    .ad-container { background: #111; display: flex; align-items: center; justify-content: center; margin: 20px 0; min-height: 90px; border-radius: 10px; }
+    body.light-mode .ad-container { background: #e2e8f0; }
+    .top-ad { width: 80%; margin-top: 130px; margin-bottom: 30px; }
+    .bottom-ad { width: 90%; margin-top: 40px; }
+    .mid-ad { width: 90%; margin: 50px 0; min-height: 250px; }
     .right-ad { width: 160px; height: 600px; position: relative; margin-top: 40px; align-self: flex-end; }
-
-    /* Button */
     #startBtn { transition: all 0.3s ease; }
     #startBtn.active { color: #00ffea; text-shadow: 0 0 15px #00ffe0; }
-
-    /* Network Info */
-    .network-box {
-      margin-top: 15px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(0, 210, 255, 0.4);
-      border-radius: 10px;
-      padding: 12px 20px;
-      color: #00e0ff;
-      text-align: center;
-      width: fit-content;
-      margin-inline: auto;
-      box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
-    }
-    body.light-mode .network-box {
-      background: rgba(255, 255, 255, 0.8);
-      border-color: rgba(58, 71, 213, 0.4);
-      color: #3a47d5;
-      box-shadow: 0 0 8px rgba(58, 71, 213, 0.2);
-    }
-
-    /* Progress Bars */
-    .progress-bar {
-      width: 100%;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 10px;
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #00d2ff, #3a47d5);
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-    body.light-mode .progress-bar {
-      background: rgba(0, 0, 0, 0.2);
-    }
-    body.light-mode .progress-fill {
-      background: linear-gradient(90deg, #3a47d5, #00d2ff);
-    }
-
-    /* Responsive */
+    .network-box { margin-top: 15px; background: rgba(0,0,0,0.4); border: 1px solid rgba(0,210,255,0.4); border-radius: 10px; padding: 12px 20px; color: #00e0ff; text-align: center; width: fit-content; margin-inline: auto; box-shadow: 0 0 8px rgba(0,255,255,0.2); }
+    body.light-mode .network-box { background: rgba(255,255,255,0.8); border-color: rgba(58,71,213,0.4); color: #3a47d5; box-shadow: 0 0 8px rgba(58,71,213,0.2); }
+    .progress-bar { width: 100%; height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; margin-top: 10px; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg,#00d2ff,#3a47d5); width: 0%; transition: width 0.5s ease; }
+    body.light-mode .progress-bar { background: rgba(0,0,0,0.2); }
+    body.light-mode .progress-fill { background: linear-gradient(90deg,#3a47d5,#00d2ff); }
     @media (max-width: 1024px) { .right-ad { display: none; } }
-    @media (max-width: 768px) {
-      .top-ad { margin-top: 130px; }
-      .bottom-ad:last-of-type { margin-bottom: 110px; }
-      .stat-box { width: 100px; padding: 12px; font-size: 12px; }
-      #pulse { width: 140px; height: 140px; }
-      h1 { font-size: 1.8rem; }
-      .ad-container { border-width: 1px; margin: 10px 0; }
-      section { width: 90%; padding: 14px; }
-    }
+    @media (max-width: 768px) { .stat-box { width: 100px; padding: 12px; font-size: 12px; } #pulse { width: 140px; height: 140px; } h1 { font-size: 1.8rem; } section { width: 90%; padding: 14px; } }
   </style>
 </head>
 
@@ -175,45 +49,41 @@
   <!-- Logo -->
   <div class="futuristic-logo">Velocity</div>
 
-  <!-- Theme Toggle Button -->
+  <!-- Theme Toggle -->
   <button id="themeToggle" class="absolute top-10 right-10 z-20 px-3 py-1 bg-black/40 border border-cyan-400 rounded-lg text-cyan-300 hover:bg-cyan-400/10 transition" aria-label="Toggle Theme">🌙 Dark</button>
 
   <!-- Background Gradient -->
   <div class="absolute inset-0 bg-flow opacity-20 -z-10"></div>
 
   <!-- Top Ad -->
-  <div class="ad-container top-ad z-10" aria-label="Top Advertisement"><p>Top Ad</p></div>
+  <div class="ad-container top-ad z-10" aria-label="Top Advertisement">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1234567890123456"
+         data-ad-slot="1111111111"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
 
   <!-- Title -->
-  <h1 class="text-4xl md:text-5xl font-bold mb-4 z-10 text-center">
-    🚀 <span class="text-cyan-400">Speed Test</span>
-  </h1>
+  <h1 class="text-4xl md:text-5xl font-bold mb-4 z-10 text-center">🚀 <span class="text-cyan-400">Speed Test</span></h1>
 
   <!-- Test Status Line -->
   <div id="readingLine" class="text-lg text-cyan-300 mb-6 h-6 z-10 text-center" aria-live="polite"></div>
 
-  <!-- Test Pulse Button -->
+  <!-- Pulse Button -->
   <div id="pulse" class="w-48 h-48 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center glow relative z-10">
     <button id="startBtn" class="text-white text-xl font-bold uppercase tracking-wide" aria-label="Start Speed Test">Start Test</button>
   </div>
 
   <!-- Progress Bars -->
   <div class="flex flex-col items-center mt-6 z-10 w-80">
-    <div class="w-full mb-2">
-      <label class="text-sm text-cyan-300">Ping Progress</label>
-      <div class="progress-bar"><div id="pingProgress" class="progress-fill"></div></div>
-    </div>
-    <div class="w-full mb-2">
-      <label class="text-sm text-cyan-300">Download Progress</label>
-      <div class="progress-bar"><div id="downloadProgress" class="progress-fill"></div></div>
-    </div>
-    <div class="w-full">
-      <label class="text-sm text-cyan-300">Upload Progress</label>
-      <div class="progress-bar"><div id="uploadProgress" class="progress-fill"></div></div>
-    </div>
+    <div class="w-full mb-2"><label class="text-sm text-cyan-300">Ping Progress</label><div class="progress-bar"><div id="pingProgress" class="progress-fill"></div></div></div>
+    <div class="w-full mb-2"><label class="text-sm text-cyan-300">Download Progress</label><div class="progress-bar"><div id="downloadProgress" class="progress-fill"></div></div></div>
+    <div class="w-full"><label class="text-sm text-cyan-300">Upload Progress</label><div class="progress-bar"><div id="uploadProgress" class="progress-fill"></div></div></div>
   </div>
 
-  <!-- Stats Boxes -->
+  <!-- Stats -->
   <div class="flex flex-wrap justify-center mt-10 z-10">
     <div id="downloadBox" class="stat-box" aria-label="Download Speed">Download: -- Mbps</div>
     <div id="uploadBox" class="stat-box" aria-label="Upload Speed">Upload: -- Mbps</div>
@@ -224,50 +94,70 @@
   <div class="flex justify-center gap-4 mt-4 z-10">
     <a id="shareBtn" href="#" class="px-4 py-2 bg-black/40 border border-cyan-400 rounded-lg text-cyan-300 hover:bg-cyan-400/10 transition" aria-label="Share Test Results">🔗 Share Result</a>
     <a href="#" class="px-4 py-2 bg-black/40 border border-cyan-400 rounded-lg text-cyan-300 hover:bg-cyan-400/10 transition" aria-label="Add to Desktop">💻 Add to Desktop</a>
+    <a href="#" class="px-4 py-2 bg-black/40 border border-cyan-400 rounded-lg text-cyan-300 hover:bg-cyan-400/10 transition" aria-label="Get Extension">🧩 Extension</a>
   </div>
 
   <!-- Network Info -->
   <div id="network-info" class="network-box z-10" aria-label="Network Information">
-    <div><span class="icon">🌐</span> <span id="isp-name">Detecting...</span> <span id="location"></span></div>
-    <div><span class="icon">👤</span> <span id="server-name">Detecting...</span> <span id="server-ip"></span></div>
-    <div><span class="icon">🕒</span> <span id="asn">ASN: --</span> | <span id="timezone">Timezone: --</span></div>
-  </div>
-
-  <!-- Extension Button -->
-  <div class="flex justify-center mt-6 z-10">
-    <a href="#" class="px-5 py-2 bg-black/40 border border-cyan-400 rounded-lg text-cyan-300 hover:bg-cyan-400/10 transition" aria-label="Get Extension">🧩 Extension</a>
+    <div>🌐 <span id="isp-name">Detecting...</span> <span id="location"></span></div>
+    <div>👤 <span id="server-name">Detecting...</span> <span id="server-ip"></span></div>
+    <div>🕒 <span id="asn">ASN: --</span> | <span id="timezone">Timezone: --</span></div>
   </div>
 
   <!-- Mid Ad -->
-  <div class="ad-container mid-ad z-10" aria-label="Middle Advertisement"><p>Middle Ad</p></div>
+  <div class="ad-container mid-ad z-10" aria-label="Middle Advertisement">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1234567890123456"
+         data-ad-slot="2222222222"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
 
-  <!-- Right Ad (Desktop Only) -->
-  <div class="ad-container right-ad z-10 hidden lg:flex" aria-label="Right Side Advertisement"><p>Right Side Ad</p></div>
+  <!-- Right Ad -->
+  <div class="ad-container right-ad z-10 hidden lg:flex" aria-label="Right Side Advertisement">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1234567890123456"
+         data-ad-slot="3333333333"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
 
   <!-- About Section -->
   <section class="w-11/12 md:w-3/4 text-center bg-black/40 border border-cyan-500 rounded-xl p-6 mt-6 mb-10 z-10 backdrop-blur-md">
     <h2 class="text-2xl font-bold text-cyan-400 mb-3">About Velocity</h2>
     <p class="text-gray-300 text-sm mb-4">
-      Velocity is an advanced, cloud-powered internet speed testing platform that delivers precise, real-time network performance insights.  
-      Our intelligent algorithms ensure accurate measurements of your download, upload, and ping speeds — helping you analyze your connection confidently.
+      Velocity is an advanced, cloud-powered internet speed testing platform that delivers precise, real-time network performance insights.
     </p>
     <h3 class="text-lg font-semibold text-cyan-300 mb-2">Privacy</h3>
-    <p class="text-gray-400 text-xs mb-4">
-      We do not store or share any user data. All tests are performed anonymously.  
-      © <span id="year"></span> Velocity. All rights reserved.
-    </p>
-    <button id="historyBtn" class="px-4 py-2 bg-cyan-400 text-black rounded-lg hover:bg-cyan-500 transition" aria-label="View Test History">📊 View History</button>
+    <p class="text-gray-400 text-xs mb-4">We do not store or share any user data. All tests are performed anonymously. © <span id="year"></span> Velocity. All rights reserved.</p>
+    <button id="historyBtn" class="px-4 py-2 bg-cyan-400 text-black rounded-lg hover:bg-cyan-500 transition">📊 View History</button>
     <div id="history" class="mt-4 hidden text-left text-gray-300 text-xs"></div>
   </section>
 
   <!-- Bottom Ads -->
-  <div class="ad-container bottom-ad z-10" aria-label="Bottom Advertisement 1"><p>Bottom Ad 1</p></div>
-  <div class="ad-container bottom-ad z-10" aria-label="Bottom Advertisement 2"><p>Bottom Ad 2</p></div>
+  <div class="ad-container bottom-ad z-10" aria-label="Bottom Advertisement 1">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1234567890123456"
+         data-ad-slot="4444444444"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
+  <div class="ad-container bottom-ad z-10" aria-label="Bottom Advertisement 2">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1234567890123456"
+         data-ad-slot="5555555555"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
 
-  <!-- Main Footer -->
+  <!-- Footer -->
   <footer class="bg-gray-900 text-gray-400 text-sm py-6 mt-10 w-full">
     <div class="max-w-6xl mx-auto px-4 text-center space-y-2">
-      <p>© <span id="footerYear"></span> <span class="text-white font-semibold">Velocity Internet Speed Test</span>. All rights reserved.</p>
+      <p>© <span id="footerYear"></span> Velocity Internet Speed Test. All rights reserved.</p>
       <p>Stay connected with confidence — check your connection speed anytime.</p>
       <nav class="flex justify-center flex-wrap gap-4 mt-2">
         <a href="#accessibility" class="hover:text-white transition-colors">Accessibility</a>
@@ -280,57 +170,26 @@
     </div>
   </footer>
 
-  <!-- Minimal Footer Bar -->
-  <footer class="text-sm text-gray-400 z-10 w-full bg-gray-950/60 border-t border-cyan-900 py-3 text-center">
-    Powered by ⚡ <span class="text-cyan-300 font-semibold">Velocity</span>
-  </footer>
+  <footer class="text-sm text-gray-400 z-10 w-full bg-gray-950/60 border-t border-cyan-900 py-3 text-center">Powered by ⚡ <span class="text-cyan-300 font-semibold">Velocity</span></footer>
 
-  <!-- Script -->
   <script>
-    // Elements
-    const elements = {
-      pulse: document.getElementById("pulse"),
-      startBtn: document.getElementById("startBtn"),
-      downloadBox: document.getElementById("downloadBox"),
-      uploadBox: document.getElementById("uploadBox"),
-      pingBox: document.getElementById("pingBox"),
-      readingLine: document.getElementById("readingLine"),
-      ispName: document.getElementById("isp-name"),
-      location: document.getElementById("location"),
-      serverName: document.getElementById("server-name"),
-      serverIp: document.getElementById("server-ip"),
-      asn: document.getElementById("asn"),
-      timezone: document.getElementById("timezone"),
-      pingProgress: document.getElementById("pingProgress"),
-      downloadProgress: document.getElementById("downloadProgress"),
-      uploadProgress: document.getElementById("uploadProgress"),
-      shareBtn: document.getElementById("shareBtn"),
-      historyBtn: document.getElementById("historyBtn"),
-      history: document.getElementById("history"),
-      themeToggle: document.getElementById("themeToggle"),
-    };
+    document.getElementById("footerYear").textContent = new Date().getFullYear();
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    let isTesting = false;
-    let testResults = JSON.parse(localStorage.getItem('velocityResults')) || [];
-
-    // Theme Toggle Functionality
+    // Theme toggle
     const body = document.body;
+    const themeToggle = document.getElementById("themeToggle");
     const savedTheme = localStorage.getItem('velocityTheme') || 'dark';
-    if (savedTheme === 'light') {
-      body.classList.add('light-mode');
-      elements.themeToggle.textContent = '☀️ Light';
-    } else {
-      elements.themeToggle.textContent = '🌙 Dark';
-    }
-
-    elements.themeToggle.addEventListener('click', () => {
+    if(savedTheme === 'light'){ body.classList.add('light-mode'); themeToggle.textContent='☀️ Light'; }
+    else{ themeToggle.textContent='🌙 Dark'; }
+    themeToggle.addEventListener('click', ()=>{
       body.classList.toggle('light-mode');
-      const isLight = body.classList.contains('light-mode');
-      elements.themeToggle.textContent = isLight ? '☀️ Light' : '🌙 Dark';
-      localStorage.setItem('velocityTheme', isLight ? 'light' : 'dark');
+      themeToggle.textContent = body.classList.contains('light-mode') ? '☀️ Light' : '🌙 Dark';
+      localStorage.setItem('velocityTheme', body.classList.contains('light-mode') ? 'light':'dark');
     });
 
-    // Fetch Network Info
-    async function fetchNetworkInfo() {
-      try {
-        const response = await fetch('https://ipapi
+    // Initialize AdSense
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</body>
+</html>
