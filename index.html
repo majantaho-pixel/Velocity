@@ -6,32 +6,26 @@
   <title>Velocity Internet Speed Test</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
-
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet"/>
-
   <style>
     body {
       background: radial-gradient(circle at center, #0b1120, #020617);
       overflow-x: hidden;
       font-family: 'Orbitron', sans-serif;
     }
-
     .bg-flow {
       background: linear-gradient(120deg, #00d2ff, #3a47d5);
       background-size: 200% 200%;
       animation: gradientFlow 6s ease infinite;
     }
-
     @keyframes gradientFlow {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
     .glow {
       box-shadow: 0 0 40px 10px rgba(0, 208, 255, 0.4);
     }
-
     .stat-box {
       background: rgba(0, 0, 0, 0.5);
       border: 2px solid #00d2ff;
@@ -42,7 +36,6 @@
       margin: 10px;
       backdrop-filter: blur(10px);
     }
-
     .futuristic-logo {
       font-family: 'Orbitron', sans-serif;
       font-size: 1.5rem;
@@ -54,7 +47,6 @@
       z-index: 20;
       text-shadow: 0 0 10px #00d2ff;
     }
-
     .ad-container {
       background: #111;
       border: 2px dashed #00d2ff;
@@ -66,11 +58,9 @@
       margin: 20px 0;
       min-height: 90px;
     }
-
     .top-ad { height: 90px; width: 80%; margin-top: 90px; margin-bottom: 30px; }
     .bottom-ad { height: 90px; width: 90%; margin-top: 40px; }
     .mid-ad { height: 250px; width: 90%; margin-top: 50px; margin-bottom: 50px; }
-
     .right-ad {
       width: 160px;
       height: 600px;
@@ -78,11 +68,8 @@
       margin-top: 40px;
       align-self: flex-end;
     }
-
     #startBtn { transition: all 0.3s ease; }
     #startBtn.active { color: #00ffea; text-shadow: 0 0 15px #00ffe0; }
-
-    /* ✅ ISP & Server Info Box */
     .network-box {
       margin-top: 15px;
       background: rgba(0, 0, 0, 0.4);
@@ -97,40 +84,20 @@
       margin-right: auto;
       box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
     }
-
-    .network-box .icon {
-      margin-right: 8px;
-    }
-
-    .network-box div {
-      margin: 4px 0;
-      font-size: 14px;
-    }
-
-    /* ✅ Responsive Fix for Mobile */
-    @media (max-width: 1024px) {
-      .right-ad { display: none; }
-    }
-
+    .network-box .icon { margin-right: 8px; }
+    .network-box div { margin: 4px 0; font-size: 14px; }
+    @media (max-width: 1024px) { .right-ad { display: none; } }
     @media (max-width: 768px) {
-      .top-ad { margin-top: 130px; } /* 👈 تھوڑا نیچے کیا */
-      .bottom-ad:last-of-type { margin-bottom: 110px; } /* 👈 نیچے والی ad تھوڑی اوپر */
-      .stat-box {
-        width: 100px;
-        padding: 12px;
-        font-size: 12px;
-      }
-      #pulse {
-        width: 140px;
-        height: 140px;
-      }
+      .top-ad { margin-top: 130px; }
+      .bottom-ad:last-of-type { margin-bottom: 110px; }
+      .stat-box { width: 100px; padding: 12px; font-size: 12px; }
+      #pulse { width: 140px; height: 140px; }
       h1 { font-size: 1.8rem; }
       .ad-container { border-width: 1px; margin: 10px 0; }
       section { width: 90%; padding: 14px; }
     }
   </style>
 </head>
-
 <body class="flex flex-col items-center justify-start min-h-screen text-white relative overflow-x-hidden">
 
   <div class="futuristic-logo">Velocity</div>
@@ -180,12 +147,12 @@
   <section class="w-11/12 md:w-3/4 text-center bg-black/40 border border-cyan-500 rounded-xl p-6 mt-6 mb-10 z-10 backdrop-blur-md">
     <h2 class="text-2xl font-bold text-cyan-400 mb-3">About Velocity</h2>
     <p class="text-gray-300 text-sm mb-4">
-      Velocity is a fast and reliable online speed testing tool that helps you check your internet connection in real-time. 
+      Velocity is a fast and reliable online speed testing tool that helps you check your internet connection in real-time.
       We ensure accurate results for download, upload, and ping speeds using modern measurement algorithms.
     </p>
     <h3 class="text-lg font-semibold text-cyan-300 mb-2">Privacy & Copyright</h3>
     <p class="text-gray-400 text-xs">
-      We do not store or share any user data. All tests are performed anonymously for better privacy. 
+      We do not store or share any user data. All tests are performed anonymously for better privacy.
       © <span id="year"></span> Velocity. All rights reserved.
     </p>
   </section>
@@ -194,6 +161,22 @@
   <div class="ad-container bottom-ad z-10"><p>Bottom Ad 1</p></div>
   <div class="ad-container bottom-ad z-10"><p>Bottom Ad 2</p></div>
 
+  <!-- ✅ New Footer (added above old footer) -->
+  <footer class="bg-gray-900 text-gray-400 text-sm py-6 mt-10 w-full">
+    <div class="max-w-6xl mx-auto px-4 text-center space-y-2">
+      <p>© 2025 <span class="text-white font-semibold">Velocity Internet Speed Test</span>. All rights reserved.</p>
+      <p>Stay connected with confidence — check your connection speed anytime.</p>
+      <div class="flex justify-center flex-wrap gap-4 mt-2">
+        <a href="#" class="hover:text-white transition-colors">Accessibility</a>
+        <a href="#" class="hover:text-white transition-colors">Network Status</a>
+        <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-white transition-colors">Terms of Use</a>
+        <a href="#" class="hover:text-white transition-colors">Do Not Sell My Personal Information</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ✅ Old Footer -->
   <footer class="absolute bottom-5 text-sm text-gray-400 z-10">
     Powered by ⚡ Velocity  <a href="/privacy" class="text-cyan-300">|Privacy Policy</a>
   </footer>
@@ -212,7 +195,6 @@
 
     let isTesting = false;
 
-    // Fetch ISP and location info
     async function fetchNetworkInfo() {
       try {
         const response = await fetch('https://ipapi.co/json/');
@@ -230,53 +212,39 @@
       }
     }
 
-    // Measure ping
     async function measurePing() {
       const start = Date.now();
       try {
         await fetch('https://www.google.com/favicon.ico', { method: 'HEAD', cache: 'no-cache' });
         return Date.now() - start;
-      } catch {
-        return null;
-      }
+      } catch { return null; }
     }
 
-    // Measure download speed
     async function measureDownload() {
-      const url = 'https://speed.cloudflare.com/__down?bytes=50000000'; // 50MB test file
+      const url = 'https://speed.cloudflare.com/__down?bytes=50000000';
       const start = Date.now();
       try {
         const response = await fetch(url);
         const blob = await response.blob();
         const end = Date.now();
-        const duration = (end - start) / 1000; // seconds
+        const duration = (end - start) / 1000;
         const bitsLoaded = blob.size * 8;
         const speedBps = bitsLoaded / duration;
-        return speedBps / 1000000; // Mbps
-      } catch {
-        return null;
-      }
+        return speedBps / 1000000;
+      } catch { return null; }
     }
 
-    // Measure upload speed (simplified, as full upload test requires server)
     async function measureUpload() {
-      // For a real upload test, you'd need a server endpoint. This is a placeholder.
-      // Simulating with a small upload to a test endpoint if available.
-      // For demo, we'll use a fake value or a simple test.
-      const data = new ArrayBuffer(1024 * 1024); // 1MB
+      const data = new ArrayBuffer(1024 * 1024);
       const start = Date.now();
       try {
-        // Using a placeholder; in reality, upload to a test server.
-        // For now, simulate based on download speed (not accurate).
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Fake delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
         const end = Date.now();
         const duration = (end - start) / 1000;
         const bitsUploaded = data.byteLength * 8;
         const speedBps = bitsUploaded / duration;
-        return speedBps / 1000000; // Mbps, but this is fake
-      } catch {
-        return null;
-      }
+        return speedBps / 1000000;
+      } catch { return null; }
     }
 
     async function startSpeedTest() {
@@ -287,43 +255,24 @@
 
       gsap.to(pulse, { scale: 1.2, repeat: -1, yoyo: true, duration: 0.6, ease: "power1.inOut" });
       let hue = 0;
-      const colorAnim = gsap.to({}, {
-        duration: 6,
-        repeat: -1,
-        onUpdate: () => {
-          hue = (hue + 2) % 360;
-          pulse.style.background = `linear-gradient(135deg, hsl(${hue}, 100%, 60%), hsl(${(hue+60)%360}, 100%, 60%))`;
-        },
-      });
+      const colorAnim = gsap.to({}, { duration: 6, repeat: -1, onUpdate: () => {
+        hue = (hue + 2) % 360;
+        pulse.style.background = `linear-gradient(135deg, hsl(${hue}, 100%, 60%), hsl(${(hue+60)%360}, 100%, 60%))`;
+      }});
 
-      // Ping test
       readingLine.textContent = "Testing Ping...";
       const ping = await measurePing();
-      if (ping !== null) {
-        pingBox.textContent = `Ping: ${ping.toFixed(0)} ms`;
-      } else {
-        pingBox.textContent = "Ping: Error";
-      }
+      pingBox.textContent = ping !== null ? `Ping: ${ping.toFixed(0)} ms` : "Ping: Error";
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Download test
       readingLine.textContent = "Testing Download...";
       const download = await measureDownload();
-      if (download !== null) {
-        downloadBox.textContent = `Download: ${download.toFixed(2)} Mbps`;
-      } else {
-        downloadBox.textContent = "Download: Error";
-      }
+      downloadBox.textContent = download !== null ? `Download: ${download.toFixed(2)} Mbps` : "Download: Error";
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Upload test (placeholder)
       readingLine.textContent = "Testing Upload...";
       const upload = await measureUpload();
-      if (upload !== null) {
-        uploadBox.textContent = `Upload: ${upload.toFixed(2)} Mbps`;
-      } else {
-        uploadBox.textContent = "Upload: Error";
-      }
+      uploadBox.textContent = upload !== null ? `Upload: ${upload.toFixed(2)} Mbps` : "Upload: Error";
       await new Promise(resolve => setTimeout(resolve, 500));
 
       gsap.killTweensOf(pulse);
@@ -351,8 +300,6 @@
     });
 
     document.getElementById("year").textContent = new Date().getFullYear();
-
-    // Load network info on page load
     fetchNetworkInfo();
   </script>
 </body>
