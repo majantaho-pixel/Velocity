@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Velocity Internet Speed Test</title>
 
+  <!-- SEO Meta -->
+  <meta name="description" content="Check your internet speed in real-time with Velocity Speed Test. Download, upload, and ping results with history.">
+  <meta name="keywords" content="Internet Speed Test, Velocity, Ping Test, Download Speed, Upload Speed">
+  <meta name="robots" content="index, follow">
+
   <!-- Tailwind & GSAP -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
@@ -13,7 +18,7 @@
   <!-- AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-  <!-- LibreSpeed JS (public endpoint, works on frontend) -->
+  <!-- LibreSpeed JS -->
   <script src="https://public.librespeed.org/librespeed.js"></script>
 
   <style>
@@ -28,7 +33,7 @@
     .stat-box { background:rgba(0,0,0,0.5); border:2px solid #00d2ff; border-radius:12px; padding:20px; text-align:center; width:150px; margin:10px; backdrop-filter:blur(10px); transition:transform 0.2s ease; }
     .stat-box:hover { transform:scale(1.05); }
     body.light-mode .stat-box { background:rgba(255,255,255,0.8); border-color:#3a47d5; color:#1a202c; }
-    .futuristic-logo { font-size:1.5rem; font-weight:bold; color:#00d2ff; position:absolute; top:10px; left:20px; z-index:20; text-shadow:0 0 10px #00d2ff; letter-spacing:1px; }
+    .futuristic-logo { font-size:1.5rem; font-weight:bold; color:#00d2ff; position:absolute; top:10px; left:20px; z-index:20; text-shadow:0 0 10px #00d2ff; letter-spacing:1px; cursor:pointer; }
     body.light-mode .futuristic-logo { color:#3a47d5; text-shadow:none; }
     .ad-container { display:flex; align-items:center; justify-content:center; margin:20px 0; border-radius:10px; min-height:90px; }
     .top-ad { width:80%; margin-top:90px; margin-bottom:30px; }
@@ -50,7 +55,7 @@
 
 <body class="flex flex-col items-center justify-start min-h-screen relative overflow-x-hidden">
 
-  <div class="futuristic-logo">Velocity</div>
+  <div class="futuristic-logo" onclick="window.location.reload();">Velocity</div>
 
   <button id="themeToggle" class="absolute top-10 right-10 z-20 px-3 py-1 bg-black/40 border border-cyan-400 rounded-lg text-cyan-300 hover:bg-cyan-400/10 transition" aria-label="Toggle Theme">🌙 Dark</button>
 
@@ -130,143 +135,137 @@
          data-ad-slot="4444444444"
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
-<script>
-  // ===== Dynamic Years =====
-  document.getElementById("footerYear").textContent = new Date().getFullYear();
-  document.getElementById("year").textContent = new Date().getFullYear();
+  </div>
 
-  // ===== Theme Toggle =====
-  const bodyEl = document.body;
-  const themeToggle = document.getElementById('themeToggle');
-  const savedTheme = localStorage.getItem('velocityTheme') || 'dark';
-  if(savedTheme === 'light'){ 
-    bodyEl.classList.add('light-mode'); 
-    themeToggle.textContent='☀️ Light'; 
-  } else { 
-    themeToggle.textContent='🌙 Dark'; 
-  }
-  themeToggle.addEventListener('click', () => {
-    bodyEl.classList.toggle('light-mode');
-    themeToggle.textContent = bodyEl.classList.contains('light-mode') ? '☀️ Light' : '🌙 Dark';
-    localStorage.setItem('velocityTheme', bodyEl.classList.contains('light-mode') ? 'light' : 'dark');
-  });
+  <footer class="bg-gray-900 text-gray-400 text-sm py-6 mt-10 w-full">
+    <div class="max-w-6xl mx-auto px-4 text-center space-y-2">
+      <p>© <span id="footerYear"></span> Velocity Internet Speed Test. All rights reserved.</p>
+      <p>Stay connected with confidence — check your connection speed anytime.</p>
+    </div>
+  </footer>
 
-  // ===== PWA Install =====
-  let deferredPrompt;
-  const installBtn = document.getElementById('installBtn');
-  window.addEventListener('beforeinstallprompt', (e) => { 
-    e.preventDefault(); 
-    deferredPrompt = e; 
-    installBtn.style.display='inline-block'; 
-  });
-  installBtn.addEventListener('click', async () => {
-    if(deferredPrompt){ 
-      deferredPrompt.prompt(); 
-      await deferredPrompt.userChoice; 
-      deferredPrompt = null; 
-      installBtn.style.display='none'; 
+  <!-- ===== JS Script ===== -->
+  <script>
+    // ===== Dynamic Years =====
+    document.getElementById("footerYear").textContent = new Date().getFullYear();
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // ===== Theme Toggle =====
+    const bodyEl = document.body;
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('velocityTheme') || 'dark';
+    if(savedTheme === 'light'){ 
+      bodyEl.classList.add('light-mode'); 
+      themeToggle.textContent='☀️ Light'; 
+    } else { 
+      themeToggle.textContent='🌙 Dark'; 
     }
-  });
+    themeToggle.addEventListener('click', () => {
+      bodyEl.classList.toggle('light-mode');
+      themeToggle.textContent = bodyEl.classList.contains('light-mode') ? '☀️ Light' : '🌙 Dark';
+      localStorage.setItem('velocityTheme', bodyEl.classList.contains('light-mode') ? 'light' : 'dark');
+    });
 
-  // ===== Speed Test & Network Info =====
-  const startBtn = document.getElementById('startBtn');
-  const pingProgress = document.getElementById('pingProgress');
-  const downloadProgress = document.getElementById('downloadProgress');
-  const uploadProgress = document.getElementById('uploadProgress');
-  const downloadBox = document.getElementById('downloadBox');
-  const uploadBox = document.getElementById('uploadBox');
-  const pingBox = document.getElementById('pingBox');
-  const readingLine = document.getElementById('readingLine');
+    // ===== PWA Install =====
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+    window.addEventListener('beforeinstallprompt', (e) => { 
+      e.preventDefault(); 
+      deferredPrompt = e; 
+      installBtn.style.display='inline-block'; 
+    });
+    installBtn.addEventListener('click', async () => {
+      if(deferredPrompt){ 
+        deferredPrompt.prompt(); 
+        await deferredPrompt.userChoice; 
+        deferredPrompt = null; 
+        installBtn.style.display='none'; 
+      }
+    });
 
-  const historyDiv = document.getElementById('history');
-  let history = JSON.parse(localStorage.getItem('speedTestHistory')||'[]');
+    // ===== Speed Test & Network Info =====
+    const startBtn = document.getElementById('startBtn');
+    const pingProgress = document.getElementById('pingProgress');
+    const downloadProgress = document.getElementById('downloadProgress');
+    const uploadProgress = document.getElementById('uploadProgress');
+    const downloadBox = document.getElementById('downloadBox');
+    const uploadBox = document.getElementById('uploadBox');
+    const pingBox = document.getElementById('pingBox');
+    const readingLine = document.getElementById('readingLine');
 
-  function saveHistory(res){
-    history.unshift(res);
-    if(history.length>10) history.pop();
-    localStorage.setItem('speedTestHistory', JSON.stringify(history));
-  }
+    const historyDiv = document.getElementById('history');
+    let history = JSON.parse(localStorage.getItem('speedTestHistory')||'[]');
 
-  function renderHistory(){
-    historyDiv.innerHTML = history.length===0 
-      ? '<em>No history yet</em>' 
-      : history.map(r => `<div>${r.time}: Ping ${r.ping} ms | Download ${r.download} Mbps | Upload ${r.upload} Mbps</div>`).join('');
-  }
-
-  document.getElementById('historyBtn').addEventListener('click', () => {
-    historyDiv.classList.toggle('hidden');
-    renderHistory();
-  });
-
-  async function runSpeedTest(){
-    startBtn.disabled = true;
-    startBtn.classList.add('active');
-    readingLine.textContent = 'Testing network…';
-
-    try {
-      // ===== Initialize LibreSpeed =====
-      const server = 'https://test.librespeed.org';
-      const test = new Librespeed({server, download:true, upload:true, ping:true});
-
-      // Download progress
-      test.on('download', val => {
-        const mbps = (val / 125000).toFixed(1); // bytes → Mbps
-        downloadProgress.style.width = `${Math.min(val / 1000000, 100)}%`;
-        downloadBox.textContent = `Download: ${mbps} Mbps`;
-      });
-
-      // Upload progress
-      test.on('upload', val => {
-        const mbps = (val / 125000).toFixed(1);
-        uploadProgress.style.width = `${Math.min(val / 1000000, 100)}%`;
-        uploadBox.textContent = `Upload: ${mbps} Mbps`;
-      });
-
-      // Ping progress
-      test.on('ping', val => {
-        pingProgress.style.width = `${Math.min(val*2, 100)}%`;
-        pingBox.innerHTML = `Ping: ${val.toFixed(1)} ms<br>Jitter: ${(Math.random()*5).toFixed(1)} ms`;
-      });
-
-      // Start the test
-      const result = await test.start();
-
-      readingLine.textContent = 'Test completed ✅';
-
-      // Save result in history
-      saveHistory({
-        time: new Date().toLocaleString(),
-        ping: result.ping.toFixed(1),
-        download: (result.download / 125000).toFixed(1),
-        upload: (result.upload / 125000).toFixed(1)
-      });
-
-    } catch(err) {
-      readingLine.textContent = 'Test failed ❌';
-      console.error('Speed test error:', err);
+    function saveHistory(res){
+      history.unshift(res);
+      if(history.length>10) history.pop();
+      localStorage.setItem('speedTestHistory', JSON.stringify(history));
     }
 
-    startBtn.disabled = false;
-    startBtn.classList.remove('active');
-    renderHistory();
-  }
-
-  startBtn.addEventListener('click', runSpeedTest);
-
-  // ===== Share Button =====
-  document.getElementById('shareBtn').addEventListener('click', () => {
-    const latest = history[0];
-    if(!latest) return alert('No result to share yet');
-    const text = `My Internet Speed: Download ${latest.download} Mbps, Upload ${latest.upload} Mbps, Ping ${latest.ping} ms.`;
-    if(navigator.share){
-      navigator.share({ title:'My Speed Test Result', text });
-    } else {
-      navigator.clipboard.writeText(text).then(()=>alert('Result copied to clipboard'));
+    function renderHistory(){
+      historyDiv.innerHTML = history.length===0 
+        ? '<em>No history yet</em>' 
+        : history.map(r => `<div>${r.time}: Ping ${r.ping} ms | Download ${r.download} Mbps | Upload ${r.upload} Mbps</div>`).join('');
     }
-  });
 
-  // ===== Initialize Ads =====
-  (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</body>
-</html>
+    document.getElementById('historyBtn').addEventListener('click', () => {
+      historyDiv.classList.toggle('hidden');
+      renderHistory();
+    });
+
+    async function runSpeedTest(){
+      startBtn.disabled = true;
+      startBtn.classList.add('active');
+      readingLine.textContent = 'Testing network…';
+
+      try {
+        // ===== Initialize LibreSpeed =====
+        const server = 'https://test.librespeed.org';
+        const test = new Librespeed({server, download:true, upload:true, ping:true});
+
+        // Download progress
+        test.on('download', val => {
+          const mbps = (val / 125000).toFixed(1); // bytes → Mbps
+          downloadProgress.style.width = `${Math.min(val / 1000000, 100)}%`;
+          downloadBox.textContent = `Download: ${mbps} Mbps`;
+        });
+
+        // Upload progress
+        test.on('upload', val => {
+          const mbps = (val / 125000).toFixed(1);
+          uploadProgress.style.width = `${Math.min(val / 1000000, 100)}%`;
+          uploadBox.textContent = `Upload: ${mbps} Mbps`;
+        });
+
+        // Ping progress
+        test.on('ping', val => {
+          pingProgress.style.width = `${Math.min(val*2, 100)}%`;
+          pingBox.innerHTML = `Ping: ${val.toFixed(1)} ms<br>Jitter: ${(Math.random()*5).toFixed(1)} ms`;
+        });
+
+        // Start the test
+        const result = await test.start();
+
+        readingLine.textContent = 'Test completed ✅';
+
+        // Save result in history
+        saveHistory({
+          time: new Date().toLocaleString(),
+          ping: result.ping.toFixed(1),
+          download: (result.download / 125000).toFixed(1),
+          upload: (result.upload / 125000).toFixed(1)
+        });
+
+      } catch(err) {
+        readingLine.textContent = 'Test failed ❌';
+        console.error('Speed test error:', err);
+      }
+
+      startBtn.disabled = false;
+      startBtn.classList.remove('active');
+      renderHistory();
+    }
+
+    startBtn.addEventListener('click', runSpeedTest);
+
+    //
