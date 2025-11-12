@@ -189,8 +189,8 @@
   readingLine.textContent = 'Testing network…';
 
   // Use LibreSpeed public test server
-  const server = 'https://public.librespeed.org';
-  const test = new Librespeed({server, download:true, upload:true, ping:true});
+  const server = 'https://test.librespeed.org';
+const test = new Librespeed({server, download:true, upload:true, ping:true});
 
   // Download progress
   test.on('download', val => {
