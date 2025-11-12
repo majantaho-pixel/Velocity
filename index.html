@@ -183,17 +183,49 @@
   document.getElementById('historyBtn').addEventListener('click', () => { historyDiv.classList.toggle('hidden'); renderHistory(); });
 
   async function runSpeedTest(){
-    startBtn.disabled=true; startBtn.classList.add('active'); readingLine.textContent='Testing network…';
-    const serverUrl='https://public.librespeed.org';
-    const ls=new Librespeed({server:serverUrl, download:true, upload:true, ping:true});
-    ls.on('download', val=>{ downloadProgress.style.width=`${val/100}%`; downloadBox.textContent=`Download: ${(val/1000).toFixed(1)} Mbps`; });
-    ls.on('upload', val=>{ uploadProgress.style.width=`${val/500}%`; uploadBox.textContent=`Upload: ${(val/1000).toFixed(1)} Mbps`; });
-    ls.on('ping', val=>{ pingProgress.style.width=`${val*2}%`; pingBox.innerHTML=`Ping: ${val.toFixed(1)} ms<br>Jitter: ${(Math.random()*5).toFixed(1)} ms`; });
-    const result=await ls.start();
-    readingLine.textContent='Test completed ✅';
-    startBtn.disabled=false; startBtn.classList.remove('active');
-    saveHistory({time:new Date().toLocaleString(), ping:result.ping, download:(result.download/1000).toFixed(1), upload:(result.upload/1000).toFixed(1)});
-  }
+  startBtn.disabled = true;
+  startBtn.classList.add('active');
+  readingLine.textContent = 'Testing network…';
+
+  // Use LibreSpeed public test server
+  const server = 'https://public.librespeed.org';
+  const test = new Librespeed({server, download:true, upload:true, ping:true});
+
+  // Download progress
+  test.on('download', val => {
+    const mbps = (val / 125000).toFixed(1); // bytes → Mbps
+    downloadProgress.style.width = `${(val / 1000000)}%`;
+    downloadBox.textContent = `Download: ${mbps} Mbps`;
+  });
+
+  // Upload progress
+  test.on('upload', val => {
+    const mbps = (val / 125000).toFixed(1);
+    uploadProgress.style.width = `${(val / 1000000)}%`;
+    uploadBox.textContent = `Upload: ${mbps} Mbps`;
+  });
+
+  // Ping progress
+  test.on('ping', val => {
+    pingProgress.style.width = `${val * 2}%`;
+    pingBox.innerHTML = `Ping: ${val.toFixed(1)} ms<br>Jitter: ${(Math.random()*5).toFixed(1)} ms`;
+  });
+
+  // Run test
+  const result = await test.start();
+
+  readingLine.textContent = 'Test completed ✅';
+  startBtn.disabled = false;
+  startBtn.classList.remove('active');
+
+  // Save result in history
+  saveHistory({
+    time: new Date().toLocaleString(),
+    ping: result.ping,
+    download: (result.download / 125000).toFixed(1),
+    upload: (result.upload / 125000).toFixed(1)
+  });
+}
 
   startBtn.addEventListener('click', runSpeedTest);
 
