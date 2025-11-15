@@ -3,122 +3,48 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Velocity Internet Speed Test – Free & Accurate Online Tool</title>
-<meta name="description" content="Test your internet speed online for free. Measure download, upload & ping instantly on Wi-Fi, 4G, 5G, or broadband.">
-<meta name="keywords" content="internet speed test, online speed test, Wi-Fi speed test, broadband test, 4G, 5G, ping test, download speed, upload speed">
-<meta name="robots" content="index, follow">
-<meta name="author" content="Velocity Team">
-<meta name="language" content="English">
+<title>Velocity Internet Speed Test</title>
 
-<!-- Open Graph / Social Sharing -->
-<meta property="og:title" content="Velocity Internet Speed Test - Free & Accurate" />
-<meta property="og:description" content="Check your internet speed online for free. Instant download, upload, and ping results." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://majantaho-pixel.github.io/Velocity/" />
-<meta property="og:image" content="https://majantaho-pixel.github.io/Velocity/assets/preview.png" />
-<meta property="og:site_name" content="Velocity Internet Speed Test" />
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Velocity Internet Speed Test - Free & Accurate" />
-<meta name="twitter:description" content="Check your internet speed online for free. Instant download, upload, and ping results." />
-<meta name="twitter:image" content="https://majantaho-pixel.github.io/Velocity/assets/preview.png" />
-<meta name="twitter:site" content="@VelocitySpeed" />
-
-<!-- Favicon -->
-<link rel="icon" href="favicon.ico" type="image/x-icon">
-
-<!-- Tailwind CSS & GSAP -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
+<!-- Tailwind & GSAP -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script defer src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
 
-<!-- Google AdSense -->
+<!-- AdSense Placeholder -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-<!-- Canonical URL -->
-<link rel="canonical" href="https://majantaho-pixel.github.io/Velocity/" />
+<!-- LibreSpeed JS -->
+<script src="https://public.librespeed.org/librespeed.js"></script>
 
-<!-- Sitemap -->
-<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
-
-<!-- Structured Data: WebSite + SearchAction for AEO -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Velocity Internet Speed Test",
-  "url": "https://majantaho-pixel.github.io/Velocity/",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://majantaho-pixel.github.io/Velocity/?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
-
-<!-- Structured Data: WebPage for AI + SEO -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Velocity Internet Speed Test",
-  "description": "Test your internet speed online for free. Instant download, upload, and ping results for Wi-Fi, broadband, 4G, and 5G.",
-  "url": "https://majantaho-pixel.github.io/Velocity/"
-}
-</script>
-
-<!-- FAQ Structured Data: Voice Search & AI-Friendly -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How do I test my internet speed?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Click the 'Start Test' button on Velocity Internet Speed Test to measure download, upload, and ping speeds instantly on any device."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Velocity Internet Speed Test free?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, the test is completely free and works on all devices and networks without storing personal data."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Which devices are compatible?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Velocity works on desktops, laptops, tablets, and smartphones with any modern browser."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does Velocity store personal data?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No, all tests are anonymous. Velocity does not store or share user information."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How accurate is the speed test?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Velocity uses advanced measurement methods and multiple servers worldwide to provide highly accurate download, upload, and ping results."
-      }
-    }
-  ]
-}
-</script>
+<style>
+body { background: radial-gradient(circle at center,#0b1120,#020617); font-family:'Orbitron',sans-serif; color:white; transition: all 0.3s ease; overflow-x:hidden; }
+body.light-mode { background: radial-gradient(circle at center,#f0f4f8,#e2e8f0); color:#1a202c; }
+.bg-flow { background: linear-gradient(120deg,#00d2ff,#3a47d5); background-size:200% 200%; animation:gradientFlow 6s ease infinite; }
+@keyframes gradientFlow {0%{background-position:0%50%}50%{background-position:100%50%}100%{background-position:0%50%}}
+.glow { box-shadow:0 0 40px 10px rgba(0,208,255,0.4); transition:all 0.3s; }
+.glow:hover { box-shadow:0 0 60px 15px rgba(0,208,255,0.6); }
+body.light-mode .glow { box-shadow:0 0 40px 10px rgba(58,71,213,0.4); }
+body.light-mode .glow:hover { box-shadow:0 0 60px 15px rgba(58,71,213,0.6); }
+.stat-box { background:rgba(0,0,0,0.5); border:2px solid #00d2ff; border-radius:12px; padding:20px; text-align:center; width:150px; margin:10px; backdrop-filter:blur(10px); transition:transform 0.2s ease; }
+.stat-box:hover { transform:scale(1.05); }
+body.light-mode .stat-box { background:rgba(255,255,255,0.8); border-color:#3a47d5; color:#1a202c; }
+.futuristic-logo { font-size:1.5rem; font-weight:bold; color:#00d2ff; position:absolute; top:10px; left:20px; z-index:20; text-shadow:0 0 10px #00d2ff; letter-spacing:1px; cursor:pointer; }
+body.light-mode .futuristic-logo { color:#3a47d5; text-shadow:none; }
+.ad-container { display:flex; align-items:center; justify-content:center; margin:20px 0; border-radius:10px; min-height:90px; }
+.top-ad { width:80%; margin-top:90px; margin-bottom:30px; }
+.mid-ad { width:90%; margin:50px 0; height:250px; }
+.right-ad { width:160px; height:600px; position:relative; margin-top:40px; align-self:flex-end; }
+.bottom-ad { width:90%; margin-top:40px; }
+#startBtn { transition: all 0.3s ease; cursor:pointer; }
+#startBtn.active { color:#00ffea; text-shadow:0 0 15px #00ffe0; }
+.network-box { margin-top:15px; background:rgba(0,0,0,0.4); border:1px solid rgba(0,210,255,0.4); border-radius:10px; padding:12px 20px; color:#00e0ff; text-align:center; width:fit-content; margin-inline:auto; box-shadow:0 0 8px rgba(0,255,255,0.2); }
+body.light-mode .network-box { background:rgba(255,255,255,0.8); border-color:rgba(58,71,213,0.4); color:#3a47d5; box-shadow:0 0 8px rgba(58,71,213,0.2); }
+.progress-bar { width:100%; height:8px; background:rgba(255,255,255,0.2); border-radius:4px; overflow:hidden; margin-top:10px; }
+.progress-fill { height:100%; background:linear-gradient(90deg,#00d2ff,#3a47d5); width:0%; transition:width 0.5s ease; }
+body.light-mode .progress-fill { background:linear-gradient(90deg,#3a47d5,#00d2ff); }
+@media (max-width:1024px){ .right-ad{display:none;} }
+@media (max-width:768px){ .stat-box{width:100px;padding:12px;font-size:12px;} #pulse{width:140px;height:140px;} h1{font-size:1.8rem;} section{width:90%;padding:14px;} }
+</style>
 </head>
 
 <body class="flex flex-col items-center justify-start min-h-screen relative overflow-x-hidden">
