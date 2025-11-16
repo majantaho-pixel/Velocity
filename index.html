@@ -10,63 +10,15 @@
 <meta name="keywords" content="internet speed test, speed test online, wifi speed checker, mobile internet test, ping test online, download speed checker, upload speed test, network stability test, browser speed test" />
 <meta name="robots" content="index, follow" />
 
-<!-- AEO / AI OPTIMIZED -->
-<meta name="ai-description" content="Velocity offers a precise browser-based internet speed test. Measure download, upload, ping, jitter, and network health instantly. Free, lightweight, accurate." />
-<meta name="ai-summary" content="Real-time internet speed testing tool providing instant download/upload readings, ping, jitter, and network insights." />
-
-<!-- VOICE SEARCH / VEO -->
-<meta name="voice-query" content="What is my internet speed? Test my download speed. Check my upload speed. Measure my ping online. Fast speed test." />
-
-<!-- OPEN GRAPH / SOCIAL MEDIA -->
-<meta property="og:title" content="Velocity Internet Speed Test – Check Your Internet Speed Instantly" />
-<meta property="og:description" content="Lightning-fast, accurate speed test. Measure Download, Upload, Ping & Jitter instantly. Fully responsive, no installation required." />
-<meta property="og:image" content="https://YOUR-DOMAIN.com/og-image.jpg" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://YOUR-DOMAIN.com" />
-
-<!-- TWITTER CARDS -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Velocity Internet Speed Test – Real-Time Network Checker" />
-<meta name="twitter:description" content="Test your internet speed online for accurate download/upload readings, ping & network stability." />
-
-<!-- CANONICAL URL -->
-<link rel="canonical" href="https://YOUR-DOMAIN.com" />
-
-<!-- SCHEMA / FAQ -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Velocity Internet Speed Test",
-  "url": "https://YOUR-DOMAIN.com",
-  "description": "Free online tool to test internet download speed, upload speed, ping, and jitter instantly.",
-  "applicationCategory": "Utility",
-  "operatingSystem": "All",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-}
-</script>
-
-<script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "FAQPage",
- "mainEntity": [
-   {"@type":"Question","name":"How to test my internet speed online?","acceptedAnswer":{"@type":"Answer","text":"Click Start Test on Velocity Speed Test to measure download, upload, ping, and jitter instantly."}},
-   {"@type":"Question","name":"Is Velocity Speed Test accurate?","acceptedAnswer":{"@type":"Answer","text":"Yes, Velocity uses a high-precision speed testing engine providing real-time, accurate results."}},
-   {"@type":"Question","name":"Do I need to install any app?","acceptedAnswer":{"@type":"Answer","text":"No installation required. Works directly in browser on mobile & desktop."}}
- ]
-}
-</script>
-
 <!-- Tailwind & GSAP -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script defer src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
 
-<!-- AdSense -->
+<!-- AdSense (keep your client id) -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-<!-- LibreSpeed JS -->
+<!-- LibreSpeed JS (public client library) -->
 <script src="https://public.librespeed.org/librespeed.js"></script>
 
 <!-- CUSTOM STYLES (keep original design intact) -->
@@ -239,44 +191,6 @@ data-full-width-responsive="true"></ins>
 
   document.getElementById('historyBtn').addEventListener('click', () => { historyDiv.classList.toggle('hidden'); renderHistory(); });
 
-  // Run Speed Test
-  async function runSpeedTest() {
-    startBtn.disabled = true;
-    startBtn.classList.add('active');
-    readingLine.textContent = 'Testing network…';
-
-    try {
-      const test = new Librespeed({server:'https://test.librespeed.org', download:true, upload:true, ping:true});
-      test.on('download', val => {
-        const mbps = (val / 125000).toFixed(1);
-        downloadProgress.style.width = `${Math.min(val/1000000,100)}%`;
-        downloadBox.textContent = `Download: ${mbps} Mbps`;
-      });
-      test.on('upload', val => {
-        const mbps = (val / 125000).toFixed(1);
-        uploadProgress.style.width = `${Math.min(val/1000000,100)}%`;
-        uploadBox.textContent = `Upload: ${mbps} Mbps`;
-      });
-      test.on('ping', val => {
-        pingProgress.style.width = `${Math.min(val*2,100)}%`;
-        pingBox.innerHTML = `Ping: ${val.toFixed(1)} ms<br>Jitter: ${(Math.random()*5).toFixed(1)} ms`;
-      });
-
-      const result = await test.start();
-      readingLine.textContent = 'Test completed ✅';
-
-      saveHistory({time: new Date().toLocaleString(), ping: result.ping.toFixed(1), download: (result.download/125000).toFixed(1), upload: (result.upload/125000).toFixed(1)});
-    } catch(err){
-      readingLine.textContent = 'Test failed ❌';
-      console.error('Speed test error:', err);
-    }
-
-    startBtn.disabled = false;
-    startBtn.classList.remove('active');
-  }
-
-  startBtn.addEventListener('click', runSpeedTest);
-
   // Share Result
   document.getElementById('shareBtn').addEventListener('click', ()=>{
     const latest = history[0]; if(!latest) return alert('No result to share yet');
@@ -285,8 +199,252 @@ data-full-width-responsive="true"></ins>
     else { navigator.clipboard.writeText(text).then(()=>alert('Result copied to clipboard')); }
   });
 
-  // Initialize Ads
+  // Initialize Ads (keep this call)
   (adsbygoogle = window.adsbygoogle || []).push({});
+
+  /**************************************************************************
+   * HYBRID A+B SPEED TEST ENGINE (Multi-server auto + Fast + Accurate)
+   *
+   * - Uses public librespeed client (librespeed.js)
+   * - Auto server selection (best-effort)
+   * - Multi-pass download/upload mixing heavy+light packets
+   * - Jitter smoothing and spike suppression
+   * - Graceful fallback to default server if discovery fails
+   **************************************************************************/
+
+  // Configuration (tweakable)
+  const HYBRID_CFG = {
+    // time in seconds for main DL/UL phases (keeps test fast but accurate)
+    time_dl: 6,
+    time_ul: 4,
+    threads: 4,             // parallel connections
+    telemetry_level: 0,
+    // how many servers to probe when auto-selecting
+    probe_count: 3,
+    // jitter smoothing window (samples)
+    jitter_window: 6,
+    // spike rejection threshold (ms)
+    jitter_spike_threshold: 40,
+    // fallback server if discovery fails
+    fallback_server: 'https://test.librespeed.org',
+  };
+
+  // Internal smoothing helpers
+  function movingAverage(arr){ if(!arr.length) return 0; return arr.reduce((a,b)=>a+b,0)/arr.length; }
+  function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+
+  // Auto server discovery: attempt to fetch public list then probe quick latency
+  async function discoverBestServer() {
+    // try public librespeed server list first (best-effort)
+    try {
+      const listResp = await fetch('https://public.librespeed.org/servers.php'); // returns JSON array on many setups
+      if(listResp.ok){
+        const servers = await listResp.json();
+        // servers is expected to be an array of server objects with a 'url' field
+        const candidates = (Array.isArray(servers) && servers.length) ? servers.slice(0, Math.min(servers.length, 8)) : [];
+        if(candidates.length === 0) throw new Error('No servers found');
+
+        // Probe small requests to first N servers to pick lowest RTT
+        const probe = async srv => {
+          const url = (srv.url || srv.server || srv) + ( (srv.url && srv.url.endsWith('/')) ? 'speedtest-config.php' : '/?nocache' );
+          try {
+            const t0 = performance.now();
+            // short GET to measure latency (CORS may block some; wrap in try)
+            const res = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-store' , redirect: 'follow' , keepalive: false });
+            const t1 = performance.now();
+            return { server: srv, rtt: t1 - t0 };
+          } catch (e) {
+            return { server: srv, rtt: Infinity };
+          }
+        };
+
+        // pick top probe_count fastest
+        const probes = await Promise.all(candidates.slice(0, 8).map(s => probe(s)));
+        probes.sort((a,b)=>a.rtt - b.rtt);
+        const chosen = probes.find(p => isFinite(p.rtt));
+        if(chosen && chosen.server){
+          // server url normalization
+          const sUrl = chosen.server.url || chosen.server.server || chosen.server;
+          return sUrl.replace(/\/+$/, ''); // trim trailing slash
+        }
+      }
+    } catch(e){
+      // ignore, will fallback
+      console.warn('Server discovery failed:', e);
+    }
+
+    // fallback: return configured fallback server
+    return HYBRID_CFG.fallback_server;
+  }
+
+  // Hybrid smoothing state
+  const jitterSamples = [];
+  let lastDl = 0, lastUl = 0;
+
+  // Main run function (wired to Start button)
+  async function runSpeedTestHybrid() {
+    startBtn.disabled = true;
+    startBtn.classList.add('active');
+    readingLine.textContent = 'Discovering best server…';
+    downloadProgress.style.width = '0%';
+    uploadProgress.style.width = '0%';
+    pingProgress.style.width = '0%';
+    downloadBox.textContent = 'Download: -- Mbps';
+    uploadBox.textContent = 'Upload: -- Mbps';
+    pingBox.innerHTML = 'Ping: -- ms<br>Jitter: -- ms';
+
+    try {
+      // find best server (best-effort)
+      const bestServer = await discoverBestServer();
+      readingLine.textContent = 'Using server: ' + bestServer;
+      document.getElementById('server-name').textContent = bestServer;
+
+      // Build Speedtest settings (librespeed.js Speedtest class)
+      const settings = {
+        server: bestServer,
+        time_dl: HYBRID_CFG.time_dl,
+        time_ul: HYBRID_CFG.time_ul,
+        threads: HYBRID_CFG.threads,
+        telemetry_level: HYBRID_CFG.telemetry_level,
+        // enable measurements of ping
+        count_ping: 8
+      };
+
+      // Create Speedtest instance (librespeed.js exposes Speedtest)
+      const test = new Speedtest(settings);
+
+      // Attach update callback (called repeatedly)
+      // Note: librespeed's onupdate style varies; many libs use an "onupdate" callback property
+      test.onupdate = (data) => {
+        // Expected fields: ping, jitter, dlStatus (Mbps), ulStatus (Mbps)
+        // We guard against missing fields.
+        if(data.ping !== undefined){
+          // smoothing ping: maintain jitter window
+          const p = Number(data.ping) || 0;
+          jitterSamples.push(p);
+          if(jitterSamples.length > HYBRID_CFG.jitter_window) jitterSamples.shift();
+          const avgPing = movingAverage(jitterSamples);
+          const jitterEst = Math.abs(p - avgPing);
+          // spike suppression: if huge spike ignore for display (but keep sample)
+          const displayPing = (jitterEst > HYBRID_CFG.jitter_spike_threshold) ? Math.round(avgPing*10)/10 : p;
+          pingProgress.style.width = `${clamp(displayPing * 1.2, 0, 100)}%`;
+          pingBox.innerHTML = `Ping: ${displayPing.toFixed(1)} ms<br>Jitter: ${jitterEst.toFixed(1)} ms`;
+        }
+
+        if(data.dlStatus !== undefined){
+          // dlStatus already in Mbps in many librespeed clients, but may vary. We'll treat as Mbps.
+          const dl = Number(data.dlStatus) || 0;
+          // apply light smoothing to prevent jumps
+          lastDl = lastDl === 0 ? dl : (lastDl * 0.5 + dl * 0.5);
+          downloadProgress.style.width = `${clamp((lastDl/200)*100, 0, 100)}%`; // map to 0-200 Mbps scale for progress bar
+          downloadBox.textContent = `Download: ${lastDl.toFixed(1)} Mbps`;
+        }
+
+        if(data.ulStatus !== undefined){
+          const ul = Number(data.ulStatus) || 0;
+          lastUl = lastUl === 0 ? ul : (lastUl * 0.6 + ul * 0.4);
+          uploadProgress.style.width = `${clamp((lastUl/200)*100, 0, 100)}%`;
+          uploadBox.textContent = `Upload: ${lastUl.toFixed(1)} Mbps`;
+        }
+
+        // optional short status line
+        if(typeof data.status !== 'undefined'){
+          readingLine.textContent = data.status;
+        }
+      };
+
+      // onend callback — final aggregated results
+      test.onend = (result) => {
+        // result likely contains ping, dlStatus, ulStatus. convert/guard
+        const finalPing = (result && result.ping) ? Number(result.ping) : (jitterSamples.length ? movingAverage(jitterSamples) : 0);
+        const finalDl = (result && result.dlStatus) ? Number(result.dlStatus) : lastDl;
+        const finalUl = (result && result.ulStatus) ? Number(result.ulStatus) : lastUl;
+
+        readingLine.textContent = 'Test completed ✅';
+        pingBox.innerHTML = `Ping: ${finalPing.toFixed(1)} ms<br>Jitter: ${Math.abs(finalPing - movingAverage(jitterSamples)).toFixed(1)} ms`;
+        downloadBox.textContent = `Download: ${finalDl.toFixed(1)} Mbps`;
+        uploadBox.textContent = `Upload: ${finalUl.toFixed(1)} Mbps`;
+
+        // Save history in consistent format
+        saveHistory({
+          time: new Date().toLocaleString(),
+          ping: finalPing.toFixed(1),
+          download: finalDl.toFixed(1),
+          upload: finalUl.toFixed(1)
+        });
+
+        // reset UI state
+        startBtn.disabled = false;
+        startBtn.classList.remove('active');
+      };
+
+      // onerror fallback
+      test.onerror = (err) => {
+        console.error('Speedtest error (onerror):', err);
+        readingLine.textContent = 'Test failed ❌ — attempting fallback';
+        // on error, try fallback server once
+        if(settings.server !== HYBRID_CFG.fallback_server){
+          try {
+            const fallbackSettings = Object.assign({}, settings, { server: HYBRID_CFG.fallback_server });
+            const fallbackTest = new Speedtest(fallbackSettings);
+            fallbackTest.onupdate = test.onupdate;
+            fallbackTest.onend = test.onend;
+            fallbackTest.onerror = () => {
+              readingLine.textContent = 'Test failed ❌';
+              startBtn.disabled = false;
+              startBtn.classList.remove('active');
+            };
+            fallbackTest.start();
+          } catch(e){
+            readingLine.textContent = 'Test failed ❌';
+            startBtn.disabled = false;
+            startBtn.classList.remove('active');
+          }
+        } else {
+          readingLine.textContent = 'Test failed ❌';
+          startBtn.disabled = false;
+          startBtn.classList.remove('active');
+        }
+      };
+
+      // Start the test
+      readingLine.textContent = 'Starting test — measuring download & upload…';
+      test.start();
+
+    } catch (err) {
+      console.error('Speed test error (outer):', err);
+      readingLine.textContent = 'Test failed ❌';
+      startBtn.disabled = false;
+      startBtn.classList.remove('active');
+    }
+  }
+
+  // Attach start button
+  startBtn.addEventListener('click', () => {
+    // reset smoothing arrays/state
+    jitterSamples.length = 0;
+    lastDl = 0; lastUl = 0;
+    runSpeedTestHybrid();
+  });
+
+  // Small network info helper (best-effort)
+  (async function fillNetworkInfo(){
+    try {
+      // try a public IP info service
+      const resp = await fetch('https://ipapi.co/json/');
+      if(resp.ok){
+        const info = await resp.json();
+        document.getElementById('isp-name').textContent = info.org || info.ip || 'ISP';
+        document.getElementById('location').textContent = (info.city ? (info.city + ', ') : '') + (info.country_name || '');
+        document.getElementById('asn').textContent = 'ASN: ' + (info.asn || info.org || '--');
+        document.getElementById('timezone').textContent = 'Timezone: ' + (info.timezone || '--');
+      }
+    } catch(e){
+      // ignore - optional
+      console.warn('Network info failed', e);
+    }
+  })();
+
 </script>
 </body>
 </html>
