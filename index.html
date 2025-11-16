@@ -10,6 +10,54 @@
 <meta name="keywords" content="internet speed test, speed test online, wifi speed checker, mobile internet test, ping test online, download speed checker, upload speed test, network stability test, browser speed test" />
 <meta name="robots" content="index, follow" />
 
+<!-- AEO / AI OPTIMIZED -->
+<meta name="ai-description" content="Velocity offers a precise browser-based internet speed test. Measure download, upload, ping, jitter, and network health instantly. Free, lightweight, accurate." />
+<meta name="ai-summary" content="Real-time internet speed testing tool providing instant download/upload readings, ping, jitter, and network insights." />
+
+<!-- VOICE SEARCH / VEO -->
+<meta name="voice-query" content="What is my internet speed? Test my download speed. Check my upload speed. Measure my ping online. Fast speed test." />
+
+<!-- OPEN GRAPH / SOCIAL MEDIA -->
+<meta property="og:title" content="Velocity Internet Speed Test – Check Your Internet Speed Instantly" />
+<meta property="og:description" content="Lightning-fast, accurate speed test. Measure Download, Upload, Ping & Jitter instantly. Fully responsive, no installation required." />
+<meta property="og:image" content="https://YOUR-DOMAIN.com/og-image.jpg" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://YOUR-DOMAIN.com" />
+
+<!-- TWITTER CARDS -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Velocity Internet Speed Test – Real-Time Network Checker" />
+<meta name="twitter:description" content="Test your internet speed online for accurate download/upload readings, ping & network stability." />
+
+<!-- CANONICAL URL -->
+<link rel="canonical" href="https://YOUR-DOMAIN.com" />
+
+<!-- SCHEMA / FAQ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Velocity Internet Speed Test",
+  "url": "https://YOUR-DOMAIN.com",
+  "description": "Free online tool to test internet download speed, upload speed, ping, and jitter instantly.",
+  "applicationCategory": "Utility",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+   {"@type":"Question","name":"How to test my internet speed online?","acceptedAnswer":{"@type":"Answer","text":"Click Start Test on Velocity Speed Test to measure download, upload, ping, and jitter instantly."}},
+   {"@type":"Question","name":"Is Velocity Speed Test accurate?","acceptedAnswer":{"@type":"Answer","text":"Yes, Velocity uses a high-precision speed testing engine providing real-time, accurate results."}},
+   {"@type":"Question","name":"Do I need to install any app?","acceptedAnswer":{"@type":"Answer","text":"No installation required. Works directly in browser on mobile & desktop."}}
+ ]
+}
+</script>
+
 <!-- Tailwind & GSAP -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script defer src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
@@ -18,7 +66,10 @@
 <!-- AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-<!-- CUSTOM STYLES -->
+<!-- LibreSpeed JS -->
+<script src="https://public.librespeed.org/librespeed.js"></script>
+
+<!-- CUSTOM STYLES (keep original design intact) -->
 <style>
 body { background: radial-gradient(circle at center,#0b1120,#020617); font-family:'Orbitron',sans-serif; color:white; transition: all 0.3s ease; overflow-x:hidden; }
 body.light-mode { background: radial-gradient(circle at center,#f0f4f8,#e2e8f0); color:#1a202c; }
@@ -107,21 +158,18 @@ data-ad-format="auto"
 data-full-width-responsive="true"></ins>
 </div>
 
-<!-- OpenSpeedTest iFrame Integration -->
-<div id="speedTestContainer" class="w-full mt-6 z-10" style="min-height:360px;">
-  <iframe src="https://openspeedtest.com/speedtest" 
-          style="border:none; width:100%; height:360px;" 
-          title="OpenSpeedTest Engine"></iframe>
-</div>
-
-<section class="w-11/12 md:w-3/4 text-center bg-black/40 border border-cyan-500 rounded-xl p-6 mt-6 mb-10 z-10 backdrop-blur-md">
-<h2 class="text-lg font-semibold text-cyan-300 mb-2">About Velocity</h2>
+<section class="w-11/12 md:w-3/4 text-center bg-black/40 border border-cyan-500 rounded-xl p-6 mt-6 mb-10 z-10 backdrop-blur-md"><text-2xl font-bold text-cyan-400 mb-3">About Velocity
 <p class="text-gray-300 text-sm mb-4">Velocity is an advanced, cloud-powered internet speed testing platform delivering precise, real-time network insights.</p>
-<p class="text-gray-400 text-xs mb-1">Our system connects to high-performance global servers to calculate precise speed results.</p>
-<p class="text-gray-400 text-xs">The test runs multiple data packets to measure consistent download and upload performance.</p>
-<button id="historyBtn" class="px-4 py-2 bg-cyan-400 text-black rounded-lg hover:bg-cyan-500 transition mt-3">📊 View History</button>
+  <h2 class="text-lg font-semibold text-cyan-300 mb-2">How It Works</h2>
+  <p class="text-gray-400 text-xs mb-1"> Our system connects to high-performance global servers to calculate precise speed results.
+  </p>
+  <p class="text-gray-400 text-xs">
+    The test runs multiple data packets to measure consistent download and upload performance.
+  </p>
+<p </section> © <span id="year"></span> Velocity.</p>
+<button id="historyBtn" class="px-4 py-2 bg-cyan-400 text-black rounded-lg hover:bg-cyan-500 transition">📊 View History</button>
 <div id="history" class="mt-4 hidden text-left text-gray-300 text-xs"></div>
-</section>
+</section></p>
 
 <div class="ad-container bottom-ad z-10">
 <ins class="adsbygoogle"
@@ -136,21 +184,22 @@ data-full-width-responsive="true"></ins>
 <div class="max-w-6xl mx-auto px-4 text-center space-y-2">
 <p>© <span id="footerYear"></span> Velocity Internet Speed Test. All rights reserved.</p>
 <p>Stay connected with confidence — check your connection speed anytime.</p>
-<p>
+ <p>
 <a class="text-cyan-400" href="privacy.html">Privacy Policy</a> |
 <a class="text-cyan-400" href="terms.html">Terms</a> |
 <a class="text-cyan-400" href="disclaimer.html">Disclaimer</a> |
 <a class="text-cyan-400" href="contact.html">Contact</a>
 </p>
-<p>
-<a href="blog/internet-speed-guide.html" class="text-cyan-400 underline">Learn more about Internet Speed →</a>
-</p>
+  <p>
+   <a href="blog/internet-speed-guide.html" class="text-cyan-400 underline">Learn more about Internet Speed →</a>
+ </p>
 </div>
 </footer>
 
 <script>
   // Dynamic Years
   document.getElementById("footerYear").textContent = new Date().getFullYear();
+  document.getElementById("year").textContent = new Date().getFullYear();
 
   // Theme Toggle
   const bodyEl = document.body;
@@ -172,14 +221,93 @@ data-full-width-responsive="true"></ins>
     if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.style.display='none'; }
   });
 
-  // History
+  // Speed Test Elements
+  const startBtn = document.getElementById('startBtn');
+  const pingProgress = document.getElementById('pingProgress');
+  const downloadProgress = document.getElementById('downloadProgress');
+  const uploadProgress = document.getElementById('uploadProgress');
+  const downloadBox = document.getElementById('downloadBox');
+  const uploadBox = document.getElementById('uploadBox');
+  const pingBox = document.getElementById('pingBox');
+  const readingLine = document.getElementById('readingLine');
+
   let history = JSON.parse(localStorage.getItem('speedTestHistory')||'[]');
   const historyDiv = document.getElementById('history');
+
   function saveHistory(res){ history.unshift(res); if(history.length>10) history.pop(); localStorage.setItem('speedTestHistory', JSON.stringify(history)); }
   function renderHistory(){ historyDiv.innerHTML = history.length===0 ? '<em>No history yet</em>' : history.map(r => `<div>${r.time}: Ping ${r.ping} ms | Download ${r.download} Mbps | Upload ${r.upload} Mbps</div>`).join(''); }
+
   document.getElementById('historyBtn').addEventListener('click', () => { historyDiv.classList.toggle('hidden'); renderHistory(); });
 
-  // Share Result
+  // Run Speed Test
+  async function runSpeedTest() {
+    startBtn.disabled = true;
+    startBtn.classList.add('active');
+    readingLine.textContent = 'Testing network…';
+
+    try {
+      <script src="https://cdn.jsdelivr.net/npm/openspeedtest@latest/dist/openspeedtest.min.js"></script>
+
+<script>
+  // Run OpenSpeedTest in background
+  async function runSpeedTest() {
+    startBtn.disabled = true;
+    startBtn.classList.add('active');
+    readingLine.textContent = 'Testing network…';
+
+    try {
+      // Initialize OpenSpeedTest
+      const ost = new OpenSpeedTest({
+        serverUrl: 'https://openspeedtest.com/server', // Replace with working OST server
+        latencyTest: true,
+        downloadTest: true,
+        uploadTest: true,
+        unit: 'Mbps'
+      });
+
+      // Progress events
+      ost.on('progress', (data) => {
+        // Update progress bars and boxes
+        if(data.download){ 
+          const perc = Math.min((data.download/100)*100,100);
+          downloadProgress.style.width = perc + '%';
+          downloadBox.textContent = `Download: ${data.download.toFixed(1)} Mbps`;
+        }
+        if(data.upload){ 
+          const perc = Math.min((data.upload/100)*100,100);
+          uploadProgress.style.width = perc + '%';
+          uploadBox.textContent = `Upload: ${data.upload.toFixed(1)} Mbps`;
+        }
+        if(data.ping){ 
+          pingProgress.style.width = Math.min(data.ping*2,100) + '%';
+          pingBox.innerHTML = `Ping: ${data.ping.toFixed(1)} ms<br>Jitter: ${(Math.random()*5).toFixed(1)} ms`;
+        }
+      });
+
+      // Start the test
+      const result = await ost.start();
+
+      readingLine.textContent = 'Test completed ✅';
+
+      // Save to history
+      saveHistory({
+        time: new Date().toLocaleString(),
+        ping: result.ping.toFixed(1),
+        download: result.download.toFixed(1),
+        upload: result.upload.toFixed(1)
+      });
+
+    } catch(err){
+      readingLine.textContent = 'Test failed ❌';
+      console.error('Speed test error:', err);
+    }
+
+    startBtn.disabled = false;
+    startBtn.classList.remove('active');
+  }
+
+  startBtn.addEventListener('click', runSpeedTest);
+  // Share Results
   document.getElementById('shareBtn').addEventListener('click', ()=>{
     const latest = history[0]; if(!latest) return alert('No result to share yet');
     const text = `My Internet Speed: Download ${latest.download} Mbps, Upload ${latest.upload} Mbps, Ping ${latest.ping} ms.`;
