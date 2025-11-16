@@ -11,70 +11,74 @@
 <!-- Styles -->
 <style>
 body {
-    font-family:'Orbitron',sans-serif;
+    font-family: 'Orbitron', sans-serif;
     background: radial-gradient(circle at center,#0b1120,#020617);
-    color:white;
-    margin:0;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    height:100vh;
+    color: #00d2ff;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    width: 100vw;
+    padding: 5px;
+    box-sizing: border-box;
 }
 
 h3 {
-    color:#00d2ff;
-    margin-bottom:15px;
-    font-size:1.2rem;
-    text-align:center;
+    font-size: 1rem;
+    margin: 5px 0;
+    text-align: center;
 }
 
 .stat-box {
-    background:rgba(0,0,0,0.5);
-    border:2px solid #00d2ff;
-    border-radius:12px;
-    padding:10px;
-    text-align:center;
-    width:200px;
-    margin:5px;
-    font-size:0.9rem;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid #00d2ff;
+    border-radius: 8px;
+    padding: 4px 6px;
+    width: 90%;
+    margin: 2px 0;
+    font-size: 0.75rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 .progress-bar {
-    width:90%;
-    height:6px;
-    background:rgba(255,255,255,0.2);
-    border-radius:4px;
-    margin:5px 0 10px 0;
+    width: 90%;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    margin: 2px 0 5px 0;
 }
 
 .progress-fill {
-    height:100%;
-    background:linear-gradient(90deg,#00d2ff,#3a47d5);
-    width:0%;
-    transition:width 0.5s ease;
+    height: 100%;
+    background: linear-gradient(90deg,#00d2ff,#3a47d5);
+    width: 0%;
+    transition: width 0.3s ease;
 }
 
 button {
-    margin-top:10px;
-    padding:6px 12px;
-    background:#00d2ff;
-    color:black;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
+    margin-top: 4px;
+    padding: 4px 8px;
+    background: #00d2ff;
+    color: black;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
 }
 
 button:hover {
-    background:#3a47d5;
-    color:white;
+    background: #3a47d5;
+    color: white;
 }
 </style>
 </head>
 <body>
 
-<h3>Mini Velocity Speed Test</h3>
+<h3>Mini Speed Test</h3>
 
 <div class="stat-box" id="downloadBox">Download: -- Mbps</div>
 <div class="progress-bar"><div id="downloadProgress" class="progress-fill"></div></div>
@@ -85,29 +89,41 @@ button:hover {
 <div class="stat-box" id="pingBox">Ping: -- ms</div>
 <div class="progress-bar"><div id="pingProgress" class="progress-fill"></div></div>
 
-<button id="refreshBtn">🔄 Run Test</button>
+<div class="stat-box" id="jitterBox">Jitter: -- ms</div>
+<div class="progress-bar"><div id="jitterProgress" class="progress-fill"></div></div>
+
+<button id="refreshBtn">🔄 Start Test</button>
 
 <script>
-const pingProgress = document.getElementById('pingProgress');
 const downloadProgress = document.getElementById('downloadProgress');
 const uploadProgress = document.getElementById('uploadProgress');
+const pingProgress = document.getElementById('pingProgress');
+const jitterProgress = document.getElementById('jitterProgress');
+
 const downloadBox = document.getElementById('downloadBox');
 const uploadBox = document.getElementById('uploadBox');
 const pingBox = document.getElementById('pingBox');
+const jitterBox = document.getElementById('jitterBox');
+
 const refreshBtn = document.getElementById('refreshBtn');
 
 async function runSpeedTest() {
-    const test = new Librespeed({server:'https://test.librespeed.org', download:true, upload:true, ping:true});
+    const test = new Librespeed({
+        server:'https://test.librespeed.org',
+        download:true,
+        upload:true,
+        ping:true
+    });
 
     test.on('download', val => {
         const mbps = (val/125000).toFixed(1);
-        downloadProgress.style.width = `${Math.min(val/1000000,100)}%`;
+        downloadProgress.style.width = `${Math.min(val/1000000*100,100)}%`;
         downloadBox.textContent = `Download: ${mbps} Mbps`;
     });
 
     test.on('upload', val => {
         const mbps = (val/125000).toFixed(1);
-        uploadProgress.style.width = `${Math.min(val/1000000,100)}%`;
+        uploadProgress.style.width = `${Math.min(val/1000000*100,100)}%`;
         uploadBox.textContent = `Upload: ${mbps} Mbps`;
     });
 
@@ -116,21 +132,32 @@ async function runSpeedTest() {
         pingBox.textContent = `Ping: ${val.toFixed(1)} ms`;
     });
 
+    // Estimate jitter (simple method using ping variance)
+    let pings = [];
+    test.on('ping', val => {
+        pings.push(val);
+        if (pings.length > 5) pings.shift();
+        const jitter = Math.max(...pings) - Math.min(...pings);
+        jitterProgress.style.width = `${Math.min(jitter*5,100)}%`;
+        jitterBox.textContent = `Jitter: ${jitter.toFixed(1)} ms`;
+    });
+
     try {
         await test.start();
     } catch(err){
-        pingBox.textContent = 'Error ❌';
         downloadBox.textContent = 'Download: -- Mbps';
         uploadBox.textContent = 'Upload: -- Mbps';
-        console.error('Mini Speed Test Error:', err);
+        pingBox.textContent = 'Ping: -- ms';
+        jitterBox.textContent = 'Jitter: -- ms';
+        console.error('Speed Test Error:', err);
     }
 }
 
-// Run test automatically every 30 seconds
+// Run test automatically every 30s
 runSpeedTest();
 setInterval(runSpeedTest, 30000);
 
-// Refresh button
+// Manual refresh
 refreshBtn.addEventListener('click', runSpeedTest);
 </script>
 </body>
