@@ -3,162 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mini Velocity Speed Test</title>
-
-<!-- Librespeed JS -->
+<title>Mini Speed Test</title>
 <script src="https://public.librespeed.org/librespeed.js"></script>
-
-<!-- Styles -->
 <style>
 body {
-    font-family: 'Orbitron', sans-serif;
-    background: radial-gradient(circle at center,#0b1120,#020617);
-    color: #00d2ff;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 100vh;
-    width: 100vw;
-    padding: 5px;
-    box-sizing: border-box;
+    margin:0;
+    font-family:'Orbitron',sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:#020617;
+    color:#00d2ff;
 }
 
-h3 {
-    font-size: 1rem;
-    margin: 5px 0;
-    text-align: center;
+/* Main mini box */
+#mainBox {
+    width:220px;  /* 3.7 inch approx */
+    height:100px; /* 1.7 inch approx */
+    background:rgba(0,0,0,0.6);
+    border:1px solid #00d2ff;
+    border-radius:10px;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:5px;
+    box-sizing:border-box;
 }
 
-.stat-box {
-    background: rgba(0,0,0,0.6);
-    border: 1px solid #00d2ff;
-    border-radius: 8px;
-    padding: 4px 6px;
-    width: 90%;
-    margin: 2px 0;
-    font-size: 0.75rem;
-    display: flex;
-    justify-content: space-between;
+/* Graph area */
+#graph {
+    flex:1;
+    width:100%;
+    position:relative;
 }
 
-.progress-bar {
-    width: 90%;
-    height: 6px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 3px;
-    margin: 2px 0 5px 0;
+/* Center line */
+#line {
+    position:absolute;
+    top:50%;
+    width:100%;
+    height:1px;
+    background:#00d2ff;
+    transform:translateY(-50%);
 }
 
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg,#00d2ff,#3a47d5);
-    width: 0%;
-    transition: width 0.3s ease;
+/* Bars */
+.bar {
+    position:absolute;
+    width:6px;
+    background:linear-gradient(to top,#00d2ff,#3a47d5);
+    bottom:50%;
 }
 
+.bar.upload {
+    bottom:auto;
+    top:50%;
+    transform-origin:bottom;
+}
+
+/* Small stats labels */
+#stats {
+    display:flex;
+    justify-content:space-around;
+    width:100%;
+    margin-top:3px;
+    font-size:0.7rem;
+}
+
+/* Start button */
 button {
-    margin-top: 4px;
-    padding: 4px 8px;
-    background: #00d2ff;
-    color: black;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: bold;
+    margin-top:2px;
+    padding:3px 6px;
+    background:#00d2ff;
+    color:black;
+    border:none;
+    border-radius:5px;
+    font-size:0.7rem;
+    cursor:pointer;
 }
-
 button:hover {
-    background: #3a47d5;
-    color: white;
+    background:#3a47d5;
+    color:white;
 }
 </style>
 </head>
 <body>
 
-<h3>Mini Speed Test</h3>
-
-<div class="stat-box" id="downloadBox">Download: -- Mbps</div>
-<div class="progress-bar"><div id="downloadProgress" class="progress-fill"></div></div>
-
-<div class="stat-box" id="uploadBox">Upload: -- Mbps</div>
-<div class="progress-bar"><div id="uploadProgress" class="progress-fill"></div></div>
-
-<div class="stat-box" id="pingBox">Ping: -- ms</div>
-<div class="progress-bar"><div id="pingProgress" class="progress-fill"></div></div>
-
-<div class="stat-box" id="jitterBox">Jitter: -- ms</div>
-<div class="progress-bar"><div id="jitterProgress" class="progress-fill"></div></div>
-
-<button id="refreshBtn">🔄 Start Test</button>
+<div id="mainBox">
+    <div id="graph">
+        <div id="line"></div>
+        <!-- Upload & Download bars will be added dynamically -->
+    </div>
+    <div id="stats">
+        <div>DL: <span id="downloadVal">--</span></div>
+        <div>UL: <span id="uploadVal">--</span></div>
+        <div>P: <span id="pingVal">--</span></div>
+        <div>J: <span id="jitterVal">--</span></div>
+    </div>
+    <button id="startBtn">🔄 Start</button>
+</div>
 
 <script>
-const downloadProgress = document.getElementById('downloadProgress');
-const uploadProgress = document.getElementById('uploadProgress');
-const pingProgress = document.getElementById('pingProgress');
-const jitterProgress = document.getElementById('jitterProgress');
+const graph = document.getElementById('graph');
+const downloadVal = document.getElementById('downloadVal');
+const uploadVal = document.getElementById('uploadVal');
+const pingVal = document.getElementById('pingVal');
+const jitterVal = document.getElementById('jitterVal');
+const startBtn = document.getElementById('startBtn');
 
-const downloadBox = document.getElementById('downloadBox');
-const uploadBox = document.getElementById('uploadBox');
-const pingBox = document.getElementById('pingBox');
-const jitterBox = document.getElementById('jitterBox');
+let uploadBars = [];
+let downloadBars = [];
+let pings = [];
 
-const refreshBtn = document.getElementById('refreshBtn');
+// Create 20 bars for upload & download
+for(let i=0;i<20;i++){
+    let uBar = document.createElement('div');
+    uBar.className='bar upload';
+    uBar.style.left = `${i*10}px`;
+    graph.appendChild(uBar);
+    uploadBars.push(uBar);
 
-async function runSpeedTest() {
-    const test = new Librespeed({
-        server:'https://test.librespeed.org',
-        download:true,
-        upload:true,
-        ping:true
-    });
+    let dBar = document.createElement('div');
+    dBar.className='bar';
+    dBar.style.left = `${i*10}px`;
+    graph.appendChild(dBar);
+    downloadBars.push(dBar);
+}
 
-    test.on('download', val => {
+async function runTest(){
+    const test = new Librespeed({server:'https://test.librespeed.org', download:true, upload:true, ping:true});
+
+    test.on('download', val=>{
         const mbps = (val/125000).toFixed(1);
-        downloadProgress.style.width = `${Math.min(val/1000000*100,100)}%`;
-        downloadBox.textContent = `Download: ${mbps} Mbps`;
+        downloadVal.textContent = mbps;
+        downloadBars.forEach((bar,i)=>{
+            let h = Math.min((val/1250000)*50,50); // scale height max 50px
+            bar.style.height = `${(i<Math.floor(mbps/5)?h:0)}px`;
+        });
     });
 
-    test.on('upload', val => {
+    test.on('upload', val=>{
         const mbps = (val/125000).toFixed(1);
-        uploadProgress.style.width = `${Math.min(val/1000000*100,100)}%`;
-        uploadBox.textContent = `Upload: ${mbps} Mbps`;
+        uploadVal.textContent = mbps;
+        uploadBars.forEach((bar,i)=>{
+            let h = Math.min((val/1250000)*50,50);
+            bar.style.height = `${(i<Math.floor(mbps/5)?h:0)}px`;
+        });
     });
 
-    test.on('ping', val => {
-        pingProgress.style.width = `${Math.min(val*2,100)}%`;
-        pingBox.textContent = `Ping: ${val.toFixed(1)} ms`;
-    });
-
-    // Estimate jitter (simple method using ping variance)
-    let pings = [];
-    test.on('ping', val => {
+    test.on('ping', val=>{
+        pingVal.textContent = val.toFixed(0);
         pings.push(val);
-        if (pings.length > 5) pings.shift();
-        const jitter = Math.max(...pings) - Math.min(...pings);
-        jitterProgress.style.width = `${Math.min(jitter*5,100)}%`;
-        jitterBox.textContent = `Jitter: ${jitter.toFixed(1)} ms`;
+        if(pings.length>5) pings.shift();
+        let jitter = Math.max(...pings)-Math.min(...pings);
+        jitterVal.textContent = jitter.toFixed(0);
     });
 
-    try {
+    try{
         await test.start();
-    } catch(err){
-        downloadBox.textContent = 'Download: -- Mbps';
-        uploadBox.textContent = 'Upload: -- Mbps';
-        pingBox.textContent = 'Ping: -- ms';
-        jitterBox.textContent = 'Jitter: -- ms';
-        console.error('Speed Test Error:', err);
+    }catch(e){
+        console.error('Speed Test Error', e);
     }
 }
 
-// Run test automatically every 30s
-runSpeedTest();
-setInterval(runSpeedTest, 30000);
+startBtn.addEventListener('click',runTest);
 
-// Manual refresh
-refreshBtn.addEventListener('click', runSpeedTest);
+// Auto run every 30s
+runTest();
+setInterval(runTest,30000);
 </script>
+
 </body>
 </html>
