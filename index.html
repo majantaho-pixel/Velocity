@@ -5,10 +5,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Velocity Internet Speed Test – Fast & Accurate Internet Speed Checker</title>
 
-<!-- SEO & Social -->
-<meta name="description" content="Velocity is a fast, accurate internet speed test tool to measure download, upload, ping, jitter, and network stability in real time." />
+<!-- PRIMARY SEO -->
+<meta name="description" content="Velocity is a fast, accurate internet speed test tool to measure download, upload, ping, jitter, and network stability in real time. Free, browser-based, no app needed." />
 <meta name="keywords" content="internet speed test, speed test online, wifi speed checker, mobile internet test, ping test online, download speed checker, upload speed test, network stability test, browser speed test" />
+<meta name="robots" content="index, follow" />
+
+<!-- AEO / AI OPTIMIZED -->
+<meta name="ai-description" content="Velocity offers a precise browser-based internet speed test. Measure download, upload, ping, jitter, and network health instantly. Free, lightweight, accurate." />
+<meta name="ai-summary" content="Real-time internet speed testing tool providing instant download/upload readings, ping, jitter, and network insights." />
+
+<!-- VOICE SEARCH / VEO -->
+<meta name="voice-query" content="What is my internet speed? Test my download speed. Check my upload speed. Measure my ping online. Fast speed test." />
+
+<!-- OPEN GRAPH / SOCIAL MEDIA -->
+<meta property="og:title" content="Velocity Internet Speed Test – Check Your Internet Speed Instantly" />
+<meta property="og:description" content="Lightning-fast, accurate speed test. Measure Download, Upload, Ping & Jitter instantly. Fully responsive, no installation required." />
+<meta property="og:image" content="https://YOUR-DOMAIN.com/og-image.jpg" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://YOUR-DOMAIN.com" />
+
+<!-- TWITTER CARDS -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Velocity Internet Speed Test – Real-Time Network Checker" />
+<meta name="twitter:description" content="Test your internet speed online for accurate download/upload readings, ping & network stability." />
+
+<!-- CANONICAL URL -->
 <link rel="canonical" href="https://YOUR-DOMAIN.com" />
+
+<!-- SCHEMA / FAQ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Velocity Internet Speed Test",
+  "url": "https://YOUR-DOMAIN.com",
+  "description": "Free online tool to test internet download speed, upload speed, ping, and jitter instantly.",
+  "applicationCategory": "Utility",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+   {"@type":"Question","name":"How to test my internet speed online?","acceptedAnswer":{"@type":"Answer","text":"Click Start Test on Velocity Speed Test to measure download, upload, ping, and jitter instantly."}},
+   {"@type":"Question","name":"Is Velocity Speed Test accurate?","acceptedAnswer":{"@type":"Answer","text":"Yes, Velocity uses a high-precision speed testing engine providing real-time, accurate results."}},
+   {"@type":"Question","name":"Do I need to install any app?","acceptedAnswer":{"@type":"Answer","text":"No installation required. Works directly in browser on mobile & desktop."}}
+ ]
+}
+</script>
 
 <!-- Tailwind & GSAP -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -21,6 +69,7 @@
 <!-- LibreSpeed JS -->
 <script src="https://public.librespeed.org/librespeed.js"></script>
 
+<!-- CUSTOM STYLES (keep original design intact) -->
 <style>
 body { background: radial-gradient(circle at center,#0b1120,#020617); font-family:'Orbitron',sans-serif; color:white; transition: all 0.3s ease; overflow-x:hidden; }
 body.light-mode { background: radial-gradient(circle at center,#f0f4f8,#e2e8f0); color:#1a202c; }
@@ -36,6 +85,10 @@ body.light-mode .stat-box { background:rgba(255,255,255,0.8); border-color:#3a47
 .futuristic-logo { font-size:1.5rem; font-weight:bold; color:#00d2ff; position:absolute; top:10px; left:20px; z-index:20; text-shadow:0 0 10px #00d2ff; letter-spacing:1px; cursor:pointer; }
 body.light-mode .futuristic-logo { color:#3a47d5; text-shadow:none; }
 .ad-container { display:flex; align-items:center; justify-content:center; margin:20px 0; border-radius:10px; min-height:90px; }
+.top-ad { width:80%; margin-top:90px; margin-bottom:30px; }
+.mid-ad { width:90%; margin:50px 0; height:250px; }
+.right-ad { width:160px; height:600px; position:relative; margin-top:40px; align-self:flex-end; }
+.bottom-ad { width:90%; margin-top:40px; }
 #startBtn { transition: all 0.3s ease; cursor:pointer; }
 #startBtn.active { color:#00ffea; text-shadow:0 0 15px #00ffe0; }
 .network-box { margin-top:15px; background:rgba(0,0,0,0.4); border:1px solid rgba(0,210,255,0.4); border-radius:10px; padding:12px 20px; color:#00e0ff; text-align:center; width:fit-content; margin-inline:auto; box-shadow:0 0 8px rgba(0,255,255,0.2); }
@@ -49,8 +102,11 @@ body.light-mode .progress-fill { background:linear-gradient(90deg,#3a47d5,#00d2f
 </head>
 
 <body class="flex flex-col items-center justify-start min-h-screen relative overflow-x-hidden">
+
 <div class="futuristic-logo" onclick="location.reload();">Velocity</div>
+
 <button id="themeToggle" class="absolute top-10 right-10 z-20 px-3 py-1 bg-black/40 border border-cyan-400 rounded-lg text-cyan-300 hover:bg-cyan-400/10 transition" aria-label="Toggle Theme">🌙 Dark</button>
+
 <div class="absolute inset-0 bg-flow opacity-20 -z-10"></div>
 
 <div class="ad-container top-ad z-10">
@@ -83,6 +139,8 @@ data-full-width-responsive="true"></ins>
 
 <div class="flex justify-center gap-4 mt-4 z-10">
 <button id="shareBtn" class="px-4 py-2 bg-black/40 border border-cyan-400 rounded-lg text-cyan-300 hover:bg-cyan-400/10 transition">🔗 Share Result</button>
+<button id="installBtn" class="px-4 py-2 bg-black/40 border border-cyan-400 rounded-lg text-cyan-300 hover:bg-cyan-400/10 transition">💻 Add to Desktop</button>
+<a href="https://chrome.google.com/webstore/detail/YOUR-EXTENSION-ID" target="_blank" class="px-4 py-2 bg-black/40 border border-cyan-400 rounded-lg text-cyan-300 hover:bg-cyan-400/10 transition">🧩 Extension</a>
 </div>
 
 <div id="network-info" class="network-box z-10" aria-label="Network Information">
@@ -91,76 +149,144 @@ data-full-width-responsive="true"></ins>
 <div>🕒 <span id="asn">ASN: --</span> | <span id="timezone">Timezone: --</span></div>
 </div>
 
-<footer class="bg-gray-900 text-gray-400 text-sm py-6 mt-10 w-full text-center">
+<div class="ad-container mid-ad z-10">
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-YOUR-AD-CLIENT"
+data-ad-slot="2222222222"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+</div>
+
+<section class="w-11/12 md:w-3/4 text-center bg-black/40 border border-cyan-500 rounded-xl p-6 mt-6 mb-10 z-10 backdrop-blur-md"><text-2xl font-bold text-cyan-400 mb-3">About Velocity
+<p class="text-gray-300 text-sm mb-4">Velocity is an advanced, cloud-powered internet speed testing platform delivering precise, real-time network insights.</p>
+  <h2 class="text-lg font-semibold text-cyan-300 mb-2">How It Works</h2>
+  <p class="text-gray-400 text-xs mb-1"> Our system connects to high-performance global servers to calculate precise speed results.
+  </p>
+  <p class="text-gray-400 text-xs">
+    The test runs multiple data packets to measure consistent download and upload performance.
+  </p>
+<p </section> © <span id="year"></span> Velocity.</p>
+<button id="historyBtn" class="px-4 py-2 bg-cyan-400 text-black rounded-lg hover:bg-cyan-500 transition">📊 View History</button>
+<div id="history" class="mt-4 hidden text-left text-gray-300 text-xs"></div>
+</section></p>
+
+<div class="ad-container bottom-ad z-10">
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-YOUR-AD-CLIENT"
+data-ad-slot="4444444444"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+</div>
+
+<footer class="bg-gray-900 text-gray-400 text-sm py-6 mt-10 w-full">
+<div class="max-w-6xl mx-auto px-4 text-center space-y-2">
 <p>© <span id="footerYear"></span> Velocity Internet Speed Test. All rights reserved.</p>
+<p>Stay connected with confidence — check your connection speed anytime.</p>
+ <p>
+<a class="text-cyan-400" href="privacy.html">Privacy Policy</a> |
+<a class="text-cyan-400" href="terms.html">Terms</a> |
+<a class="text-cyan-400" href="disclaimer.html">Disclaimer</a> |
+<a class="text-cyan-400" href="contact.html">Contact</a>
+</p>
+  <p>
+   <a href="blog/internet-speed-guide.html" class="text-cyan-400 underline">Learn more about Internet Speed →</a>
+ </p>
+</div>
 </footer>
 
 <script>
-document.getElementById("footerYear").textContent = new Date().getFullYear();
+  // Dynamic Years
+  document.getElementById("footerYear").textContent = new Date().getFullYear();
+  document.getElementById("year").textContent = new Date().getFullYear();
 
-// Theme toggle
-const bodyEl = document.body;
-const themeToggle = document.getElementById('themeToggle');
-const savedTheme = localStorage.getItem('velocityTheme') || 'dark';
-if(savedTheme==='light'){ bodyEl.classList.add('light-mode'); themeToggle.textContent='☀️ Light'; } 
-else { themeToggle.textContent='🌙 Dark'; }
-themeToggle.addEventListener('click', ()=>{
-bodyEl.classList.toggle('light-mode');
-themeToggle.textContent = bodyEl.classList.contains('light-mode') ? '☀️ Light' : '🌙 Dark';
-localStorage.setItem('velocityTheme', bodyEl.classList.contains('light-mode') ? 'light':'dark');
-});
-
-// Speed Test
-const startBtn = document.getElementById('startBtn');
-const pingProgress = document.getElementById('pingProgress');
-const downloadProgress = document.getElementById('downloadProgress');
-const uploadProgress = document.getElementById('uploadProgress');
-const downloadBox = document.getElementById('downloadBox');
-const uploadBox = document.getElementById('uploadBox');
-const pingBox = document.getElementById('pingBox');
-const readingLine = document.getElementById('readingLine');
-
-let history = JSON.parse(localStorage.getItem('speedTestHistory')||'[]');
-
-function saveHistory(res){
-  history.unshift(res);
-  if(history.length>10) history.pop();
-  localStorage.setItem('speedTestHistory', JSON.stringify(history));
-}
-
-startBtn.addEventListener('click', async ()=>{
-startBtn.disabled=true; startBtn.classList.add('active');
-readingLine.textContent='Testing network…';
-try{
-  const test = new Librespeed({server:'https://test.librespeed.org', download:true, upload:true, ping:true});
-  test.on('download', val=>{
-    const mbps = (val/125000).toFixed(1);
-    downloadProgress.style.width = `${Math.min(val/1000000,100)}%`;
-    downloadBox.textContent = `Download: ${mbps} Mbps`;
+  // Theme Toggle
+  const bodyEl = document.body;
+  const themeToggle = document.getElementById('themeToggle');
+  const savedTheme = localStorage.getItem('velocityTheme') || 'dark';
+  if(savedTheme === 'light'){ bodyEl.classList.add('light-mode'); themeToggle.textContent='☀️ Light'; }
+  else { themeToggle.textContent='🌙 Dark'; }
+  themeToggle.addEventListener('click', () => {
+    bodyEl.classList.toggle('light-mode');
+    themeToggle.textContent = bodyEl.classList.contains('light-mode') ? '☀️ Light' : '🌙 Dark';
+    localStorage.setItem('velocityTheme', bodyEl.classList.contains('light-mode') ? 'light' : 'dark');
   });
-  test.on('upload', val=>{
-    const mbps = (val/125000).toFixed(1);
-    uploadProgress.style.width = `${Math.min(val/1000000,100)}%`;
-    uploadBox.textContent = `Upload: ${mbps} Mbps`;
+
+  // PWA Install
+  let deferredPrompt;
+  const installBtn = document.getElementById('installBtn');
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.style.display='inline-block'; });
+  installBtn.addEventListener('click', async () => {
+    if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.style.display='none'; }
   });
-  test.on('ping', val=>{
-    pingProgress.style.width = `${Math.min(val*2,100)}%`;
-    pingBox.innerHTML = `Ping: ${val.toFixed(1)} ms<br>Jitter: ${(Math.random()*5).toFixed(1)} ms`;
+
+  // Speed Test Elements
+  const startBtn = document.getElementById('startBtn');
+  const pingProgress = document.getElementById('pingProgress');
+  const downloadProgress = document.getElementById('downloadProgress');
+  const uploadProgress = document.getElementById('uploadProgress');
+  const downloadBox = document.getElementById('downloadBox');
+  const uploadBox = document.getElementById('uploadBox');
+  const pingBox = document.getElementById('pingBox');
+  const readingLine = document.getElementById('readingLine');
+
+  let history = JSON.parse(localStorage.getItem('speedTestHistory')||'[]');
+  const historyDiv = document.getElementById('history');
+
+  function saveHistory(res){ history.unshift(res); if(history.length>10) history.pop(); localStorage.setItem('speedTestHistory', JSON.stringify(history)); }
+  function renderHistory(){ historyDiv.innerHTML = history.length===0 ? '<em>No history yet</em>' : history.map(r => `<div>${r.time}: Ping ${r.ping} ms | Download ${r.download} Mbps | Upload ${r.upload} Mbps</div>`).join(''); }
+
+  document.getElementById('historyBtn').addEventListener('click', () => { historyDiv.classList.toggle('hidden'); renderHistory(); });
+
+  // Run Speed Test
+  async function runSpeedTest() {
+    startBtn.disabled = true;
+    startBtn.classList.add('active');
+    readingLine.textContent = 'Testing network…';
+
+    try {
+      const test = new Librespeed({server:'https://test.librespeed.org', download:true, upload:true, ping:true});
+      test.on('download', val => {
+        const mbps = (val / 125000).toFixed(1);
+        downloadProgress.style.width = `${Math.min(val/1000000,100)}%`;
+        downloadBox.textContent = `Download: ${mbps} Mbps`;
+      });
+      test.on('upload', val => {
+        const mbps = (val / 125000).toFixed(1);
+        uploadProgress.style.width = `${Math.min(val/1000000,100)}%`;
+        uploadBox.textContent = `Upload: ${mbps} Mbps`;
+      });
+      test.on('ping', val => {
+        pingProgress.style.width = `${Math.min(val*2,100)}%`;
+        pingBox.innerHTML = `Ping: ${val.toFixed(1)} ms<br>Jitter: ${(Math.random()*5).toFixed(1)} ms`;
+      });
+
+      const result = await test.start();
+      readingLine.textContent = 'Test completed ✅';
+
+      saveHistory({time: new Date().toLocaleString(), ping: result.ping.toFixed(1), download: (result.download/125000).toFixed(1), upload: (result.upload/125000).toFixed(1)});
+    } catch(err){
+      readingLine.textContent = 'Test failed ❌';
+      console.error('Speed test error:', err);
+    }
+
+    startBtn.disabled = false;
+    startBtn.classList.remove('active');
+  }
+
+  startBtn.addEventListener('click', runSpeedTest);
+
+  // Share Result
+  document.getElementById('shareBtn').addEventListener('click', ()=>{
+    const latest = history[0]; if(!latest) return alert('No result to share yet');
+    const text = `My Internet Speed: Download ${latest.download} Mbps, Upload ${latest.upload} Mbps, Ping ${latest.ping} ms.`;
+    if(navigator.share){ navigator.share({ title:'My Speed Test Result', text }); }
+    else { navigator.clipboard.writeText(text).then(()=>alert('Result copied to clipboard')); }
   });
-  const result = await test.start();
-  readingLine.textContent='Test completed ✅';
-  saveHistory({
-    time:new Date().toLocaleString(),
-    ping: result.ping.toFixed(1),
-    download:(result.download/125000).toFixed(1),
-    upload:(result.upload/125000).toFixed(1)
-  });
-}catch(err){
-  readingLine.textContent='Test failed ❌';
-  console.error(err);
-}
-startBtn.disabled=false; startBtn.classList.remove('active');
-});
+
+  // Initialize Ads
+  (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 </body>
 </html>
