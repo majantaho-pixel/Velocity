@@ -214,11 +214,14 @@ data-full-width-responsive="true"></ins>
   });
 
   // PWA Install
-const miniWindow = window.open(
-    'mini/mini-speed.html', 
-    'MiniVelocity', 
-    'width=320,height=450,resizable=yes,scrollbars=no'
-);
+const installBtn = document.getElementById('installBtn');
+installBtn.addEventListener('click', ()=>{
+    const miniWindow = window.open(
+        'https://majantaho-pixel.github.io/Velocity/mini-speed.html',
+        'MiniVelocity',
+        'width=320,height=450,resizable=yes,scrollbars=no'
+    );
+});
 
   // Speed Test Elements
   const startBtn = document.getElementById('startBtn');
