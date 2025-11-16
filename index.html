@@ -214,12 +214,14 @@ data-full-width-responsive="true"></ins>
   });
 
   // PWA Install
-  let deferredPrompt;
   const installBtn = document.getElementById('installBtn');
-  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.style.display='inline-block'; });
-  installBtn.addEventListener('click', async () => {
-    if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.style.display='none'; }
-  });
+installBtn.addEventListener('click', ()=>{
+    const miniWindow = window.open(
+        'mini-speed.html', 
+        'MiniVelocity', 
+        'width=320,height=450,resizable=yes,scrollbars=no'
+    );
+});
 
   // Speed Test Elements
   const startBtn = document.getElementById('startBtn');
