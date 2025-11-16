@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Velocity Speed Test</title>
+<script src="https://public.librespeed.org/librespeed.js"></script>
+<style>
+body { font-family:'Orbitron',sans-serif; background: radial-gradient(circle at center,#0b1120,#020617); color:white; margin:0; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; }
+h3 { color:#00d2ff; margin-bottom:10px; font-size:1.2rem; }
+.stat-box { background:rgba(0,0,0,0.5); border:2px solid #00d2ff; border-radius:12px; padding:10px; text-align:center; width:200px; margin:5px; }
+.progress-bar { width:90%; height:6px; background:rgba(255,255,255,0.2); border-radius:4px; margin:5px 0; }
+.progress-fill { height:100%; background:linear-gradient(90deg,#00d2ff,#3a47d5); width:0%; transition:width 0.5s ease; }
+button { margin-top:10px; padding:6px 12px; background:#00d2ff; color:black; border:none; border-radius:8px; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<h3>Mini Velocity Speed Test</h3>
+
+<div class="stat-box" id="downloadBox">Download: -- Mbps</div>
+<div class="progress-bar"><div id="downloadProgress" class="progress-fill"></div></div>
+
+<div class="stat-box" id="uploadBox">Upload: -- Mbps</div>
+<div class="progress-bar"><div id="uploadProgress" class="progress-fill"></div></div>
+
+<div class="stat-box" id="pingBox">Ping: -- ms</div>
+<div class="progress-bar"><div id="pingProgress" class="progress-fill"></div></div>
+
+<button id="refreshBtn">🔄 Run Test</button>
+
+<script>
+const pingProgress = document.getElementById('pingProgress');
+const downloadProgress = document.getElementById('downloadProgress');
+const uploadProgress = document.getElementById('uploadProgress');
+const downloadBox = document.getElementById('downloadBox');
+const uploadBox = document.getElementById('uploadBox');
+const pingBox = document.getElementById('pingBox');
+const refreshBtn = document.getElementById('refreshBtn');
+
+async function runSpeedTest() {
+    const test = new Librespeed({server:'https://test.librespeed.org', download:true, upload:true, ping:true});
+    test.on('download', val => {
+        const mbps = (val/125000).toFixed(1);
+        downloadProgress.style.width = `${Math.min(val/1000000,100)}%`;
+        downloadBox.textContent = `Download: ${mbps} Mbps`;
+    });
+    test.on('upload', val => {
+        const mbps = (val/125000).toFixed(1);
+        uploadProgress.style.width = `${Math.min(val/1000000,100)}%`;
+        uploadBox.textContent = `Upload: ${mbps} Mbps`;
+    });
+    test.on('ping', val => {
+        pingProgress.style.width = `${Math.min(val*2,100)}%`;
+        pingBox.textContent = `Ping: ${val.toFixed(1)} ms`;
+    });
+    await test.start();
+}
+
+// Run test automatically every 30 seconds
+runSpeedTest();
+setInterval(runSpeedTest, 30000);
+
+refreshBtn.addEventListener('click', runSpeedTest);
+</script>
+</body>
+</html>
