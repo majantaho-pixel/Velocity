@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Velocity Internet Speed Test – Custom JS</title>
+<title>Velocity Internet Speed Test – Custom Advanced</title>
 
-<!-- Tailwind & Fonts -->
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
 
@@ -21,10 +20,8 @@ body.light-mode .glow:hover { box-shadow:0 0 60px 15px rgba(58,71,213,0.6); }
 .stat-box { background:rgba(0,0,0,0.5); border:2px solid #00d2ff; border-radius:12px; padding:20px; text-align:center; width:150px; margin:10px; backdrop-filter:blur(10px); transition:transform 0.2s ease; }
 .stat-box:hover { transform:scale(1.05); }
 body.light-mode .stat-box { background:rgba(255,255,255,0.8); border-color:#3a47d5; color:#1a202c; }
-.futuristic-logo { font-size:1.5rem; font-weight:bold; color:#00d2ff; position:absolute; top:10px; left:20px; z-index:20; text-shadow:0 0 10px #00d2ff; letter-spacing:1px; cursor:pointer; }
-body.light-mode .futuristic-logo { color:#3a47d5; text-shadow:none; }
 .progress-bar { width:100%; height:8px; background:rgba(255,255,255,0.2); border-radius:4px; overflow:hidden; margin-top:10px; }
-.progress-fill { height:100%; background:linear-gradient(90deg,#00d2ff,#3a47d5); width:0%; transition:width 0.5s ease; }
+.progress-fill { height:100%; background:linear-gradient(90deg,#00d2ff,#3a47d5); width:0%; transition:width 0.2s ease; }
 body.light-mode .progress-fill { background:linear-gradient(90deg,#3a47d5,#00d2ff); }
 </style>
 </head>
@@ -46,7 +43,7 @@ body.light-mode .progress-fill { background:linear-gradient(90deg,#3a47d5,#00d2f
 <div class="flex flex-wrap justify-center mt-10 z-10">
 <div id="downloadBox" class="stat-box" aria-label="Download Speed">Download: -- Mbps</div>
 <div id="uploadBox" class="stat-box" aria-label="Upload Speed">Upload: -- Mbps</div>
-<div id="pingBox" class="stat-box" aria-label="Ping">Ping: -- ms</div>
+<div id="pingBox" class="stat-box" aria-label="Ping">Ping: -- ms<br>Jitter: -- ms</div>
 </div>
 
 <script>
@@ -63,30 +60,33 @@ const pingBox = document.getElementById('pingBox');
 let history = JSON.parse(localStorage.getItem('speedTestHistory') || '[]');
 function saveHistory(res){ history.unshift(res); if(history.length>10) history.pop(); localStorage.setItem('speedTestHistory', JSON.stringify(history)); }
 
-// Utility functions
+// Ping + Jitter
 async function pingTest(url, count=5){
-    let total=0;
+    let times=[];
     for(let i=0;i<count;i++){
         let start=performance.now();
-        try{ await fetch(url, {cache:'no-store'}); }
-        catch(e){}
+        try{ await fetch(url+'?cache='+Math.random(), {cache:'no-store'}); } catch(e){}
         let end=performance.now();
-        total += (end-start);
+        times.push(end-start);
         pingProgress.style.width = `${((i+1)/count)*100}%`;
     }
-    return (total/count).toFixed(1);
+    const avg = times.reduce((a,b)=>a+b,0)/times.length;
+    const jitter = Math.max(...times)-Math.min(...times);
+    return {avg:avg.toFixed(1), jitter:jitter.toFixed(1)};
 }
 
-async function downloadTest(url, sizeMB=5){
+// Download
+async function downloadTest(url, sizeMB=10){
     const start = performance.now();
     await fetch(url+'?cache='+Math.random(), {cache:'no-store'});
     const end = performance.now();
     const seconds = (end-start)/1000;
     const mbps = ((sizeMB*8)/seconds).toFixed(1);
-    downloadProgress.style.width = '100%';
+    downloadProgress.style.width='100%';
     return mbps;
 }
 
+// Upload
 async function uploadTest(url, sizeMB=1){
     const data = new Uint8Array(sizeMB*1024*1024);
     crypto.getRandomValues(data);
@@ -95,7 +95,7 @@ async function uploadTest(url, sizeMB=1){
     const end = performance.now();
     const seconds = (end-start)/1000;
     const mbps = ((sizeMB*8)/seconds).toFixed(1);
-    uploadProgress.style.width = '100%';
+    uploadProgress.style.width='100%';
     return mbps;
 }
 
@@ -104,20 +104,19 @@ async function runSpeedTest(){
     startBtn.disabled=true;
     startBtn.textContent='Testing...';
 
-    pingBox.textContent='Ping: -- ms';
+    pingBox.textContent='Ping: -- ms | Jitter: -- ms';
     downloadBox.textContent='Download: -- Mbps';
     uploadBox.textContent='Upload: -- Mbps';
     pingProgress.style.width='0%';
     downloadProgress.style.width='0%';
     uploadProgress.style.width='0%';
 
-    // Use a small file on your server or public test file
     const testFile = 'https://speed.hetzner.de/10MB.bin';
     const uploadURL = 'https://httpbin.org/post';
 
     try{
-        const ping = await pingTest(testFile);
-        pingBox.textContent = `Ping: ${ping} ms`;
+        const pingRes = await pingTest(testFile);
+        pingBox.textContent = `Ping: ${pingRes.avg} ms | Jitter: ${pingRes.jitter} ms`;
 
         const download = await downloadTest(testFile, 10);
         downloadBox.textContent = `Download: ${download} Mbps`;
@@ -125,7 +124,13 @@ async function runSpeedTest(){
         const upload = await uploadTest(uploadURL, 1);
         uploadBox.textContent = `Upload: ${upload} Mbps`;
 
-        saveHistory({time: new Date().toLocaleString(), ping, download, upload});
+        saveHistory({
+            time: new Date().toLocaleString(),
+            ping: pingRes.avg,
+            jitter: pingRes.jitter,
+            download,
+            upload
+        });
     } catch(err){
         console.error(err);
         alert('Speed test failed!');
