@@ -1,167 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Velocity Internet Speed Test – Accurate OpenSpeed</title>
-
-<!-- Tailwind & Fonts -->
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
-
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Velocity Private Speed Test</title>
 <style>
-body { background: radial-gradient(circle at center,#0b1120,#020617); font-family:'Orbitron',sans-serif; color:white; transition: all 0.3s ease; overflow-x:hidden; }
-body.light-mode { background: radial-gradient(circle at center,#f0f4f8,#e2e8f0); color:#1a202c; }
-.bg-flow { background: linear-gradient(120deg,#00d2ff,#3a47d5); background-size:200% 200%; animation:gradientFlow 6s ease infinite; }
-@keyframes gradientFlow {0%{background-position:0%50%}50%{background-position:100%50%}100%{background-position:0%50%}}
-.glow { box-shadow:0 0 40px 10px rgba(0,208,255,0.4); transition:all 0.3s; }
-.glow:hover { box-shadow:0 0 60px 15px rgba(0,208,255,0.6); }
-body.light-mode .glow { box-shadow:0 0 40px 10px rgba(58,71,213,0.4); }
-body.light-mode .glow:hover { box-shadow:0 0 60px 15px rgba(58,71,213,0.6); }
-.stat-box { background:rgba(0,0,0,0.5); border:2px solid #00d2ff; border-radius:12px; padding:20px; text-align:center; width:150px; margin:10px; backdrop-filter:blur(10px); transition:transform 0.2s ease; }
-.stat-box:hover { transform:scale(1.05); }
-body.light-mode .stat-box { background:rgba(255,255,255,0.8); border-color:#3a47d5; color:#1a202c; }
-.futuristic-logo { font-size:1.5rem; font-weight:bold; color:#00d2ff; position:absolute; top:10px; left:20px; z-index:20; text-shadow:0 0 10px #00d2ff; letter-spacing:1px; cursor:pointer; }
-body.light-mode .futuristic-logo { color:#3a47d5; text-shadow:none; }
-.progress-bar { width:100%; height:8px; background:rgba(255,255,255,0.2); border-radius:4px; overflow:hidden; margin-top:10px; }
-.progress-fill { height:100%; background:linear-gradient(90deg,#00d2ff,#3a47d5); width:0%; transition:width 0.2s ease; }
-body.light-mode .progress-fill { background:linear-gradient(90deg,#3a47d5,#00d2ff); }
-#themeToggle { position:absolute; top:10px; right:20px; z-index:20; padding:5px 10px; border-radius:8px; border:1px solid #00d2ff; background:rgba(0,0,0,0.3); cursor:pointer; color:#00d2ff; transition:all 0.3s ease; }
-#themeToggle:hover { background:rgba(0,0,0,0.5); }
-#startBtn { cursor:pointer; transition:all 0.3s ease; }
-#startBtn.active { color:#00ffea; text-shadow:0 0 15px #00ffe0; }
-#history { max-height:200px; overflow-y:auto; padding:10px; background:rgba(0,0,0,0.3); border-radius:10px; margin-top:10px; font-size:12px; }
-#history div { margin-bottom:4px; }
-#shareBtn, #installBtn { cursor:pointer; transition:all 0.3s ease; margin:5px; padding:5px 10px; border-radius:8px; border:1px solid #00d2ff; background:rgba(0,0,0,0.3); color:#00d2ff; }
-#shareBtn:hover, #installBtn:hover { background:rgba(0,0,0,0.5); }
+body{font-family:'Orbitron',sans-serif; background:#0b1120; color:white; text-align:center; margin:0; padding:0;}
+button{padding:10px 20px; margin:10px; border-radius:10px; cursor:pointer; background:#0ff; border:none; color:#000;}
+.progress{width:80%; height:20px; background:#222; margin:10px auto; border-radius:10px; overflow:hidden;}
+.fill{height:100%; width:0%; background:#0ff; transition:width 0.3s;}
+.stat-box{background:rgba(0,0,0,0.5); padding:15px; margin:5px; border-radius:10px;}
+#pulse{width:200px;height:200px;margin:20px auto;border-radius:50%;background:linear-gradient(45deg,#0ff,#00f);display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px #0ff;}
 </style>
-
-<!-- OpenSpeed JS -->
-<script src="https://cdn.jsdelivr.net/gh/sivel/speedtest.js/speedtest.min.js"></script>
-
 </head>
-<body class="flex flex-col items-center justify-start min-h-screen relative overflow-x-hidden">
+<body>
 
-<div class="futuristic-logo" onclick="location.reload();">Velocity</div>
-<button id="themeToggle">🌙 Dark</button>
+<h1>🚀 Velocity Private Speed Test</h1>
 
-<div id="pulse" class="w-48 h-48 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center glow relative z-10 mt-32">
-<button id="startBtn" class="text-white text-xl font-bold uppercase tracking-wide" aria-label="Start Speed Test">Start Test</button>
+<div id="pulse">
+<button id="startBtn">Start Test</button>
 </div>
 
-<div class="flex flex-col items-center mt-6 z-10 w-80">
-<div class="w-full mb-2"><label class="text-sm text-cyan-300">Ping Progress</label><div class="progress-bar"><div id="pingProgress" class="progress-fill"></div></div></div>
-<div class="w-full mb-2"><label class="text-sm text-cyan-300">Download Progress</label><div class="progress-bar"><div id="downloadProgress" class="progress-fill"></div></div></div>
-<div class="w-full"><label class="text-sm text-cyan-300">Upload Progress</label><div class="progress-bar"><div id="uploadProgress" class="progress-fill"></div></div></div>
+<div class="flex-container">
+<div id="pingBox" class="stat-box">Ping: -- ms | Jitter: -- ms</div>
+<div id="downloadBox" class="stat-box">Download: -- Mbps</div>
+<div id="uploadBox" class="stat-box">Upload: -- Mbps</div>
 </div>
 
-<div class="flex flex-wrap justify-center mt-10 z-10">
-<div id="downloadBox" class="stat-box" aria-label="Download Speed">Download: -- Mbps</div>
-<div id="uploadBox" class="stat-box" aria-label="Upload Speed">Upload: -- Mbps</div>
-<div id="pingBox" class="stat-box" aria-label="Ping">Ping: -- ms<br>Jitter: -- ms</div>
-</div>
+<div class="progress"><div id="pingProgress" class="fill"></div></div>
+<div class="progress"><div id="downloadProgress" class="fill"></div></div>
+<div class="progress"><div id="uploadProgress" class="fill"></div></div>
 
-<div class="flex mt-4">
-<button id="shareBtn">🔗 Share</button>
-<button id="installBtn" style="display:none;">💻 Install</button>
+<div>
+<button id="shareBtn">🔗 Share Result</button>
+<div id="history"></div>
 </div>
-
-<div id="history" class="w-80"></div>
 
 <script>
-const startBtn = document.getElementById('startBtn');
-const pingProgress = document.getElementById('pingProgress');
-const downloadProgress = document.getElementById('downloadProgress');
-const uploadProgress = document.getElementById('uploadProgress');
-const downloadBox = document.getElementById('downloadBox');
-const uploadBox = document.getElementById('uploadBox');
-const pingBox = document.getElementById('pingBox');
-const historyDiv = document.getElementById('history');
-const themeToggle = document.getElementById('themeToggle');
-const installBtn = document.getElementById('installBtn');
+const startBtn=document.getElementById('startBtn');
+const pingEl=document.getElementById('pingBox');
+const downloadEl=document.getElementById('downloadBox');
+const uploadEl=document.getElementById('uploadBox');
+const pingProgress=document.getElementById('pingProgress');
+const downloadProgress=document.getElementById('downloadProgress');
+const uploadProgress=document.getElementById('uploadProgress');
+const historyDiv=document.getElementById('history');
 
-// Theme toggle
-const savedTheme = localStorage.getItem('velocityTheme') || 'dark';
-if(savedTheme==='light'){ document.body.classList.add('light-mode'); themeToggle.textContent='☀️ Light'; }
-themeToggle.addEventListener('click', ()=>{
-    document.body.classList.toggle('light-mode');
-    themeToggle.textContent = document.body.classList.contains('light-mode') ? '☀️ Light':'🌙 Dark';
-    localStorage.setItem('velocityTheme', document.body.classList.contains('light-mode') ? 'light':'dark');
-});
+let historyData=JSON.parse(localStorage.getItem('speedTestHistory')||'[]');
 
-// History
-let historyData = JSON.parse(localStorage.getItem('speedTestHistory') || '[]');
-function saveHistory(res){ historyData.unshift(res); if(historyData.length>10) historyData.pop(); localStorage.setItem('speedTestHistory', JSON.stringify(historyData)); renderHistory(); }
-function renderHistory(){ 
-    if(historyData.length===0){ historyDiv.innerHTML='<em>No history yet</em>'; return; }
-    historyDiv.innerHTML = historyData.map(r=>`<div>${r.time}: Ping ${r.ping}ms (Jitter ${r.jitter}ms) | Download ${r.download} Mbps | Upload ${r.upload} Mbps</div>`).join('');
+function renderHistory(){
+  if(historyData.length===0){historyDiv.innerHTML='<em>No history yet</em>'; return;}
+  historyDiv.innerHTML=historyData.map(r=>`<div>${r.time}: Ping ${r.ping} ms | Download ${r.download} Mbps | Upload ${r.upload} Mbps</div>`).join('');
 }
 renderHistory();
 
-// OpenSpeed Test
-async function runSpeedTest(){
-    startBtn.disabled=true;
-    startBtn.textContent='Testing...';
-    pingBox.textContent='Ping: -- ms | Jitter: -- ms';
-    downloadBox.textContent='Download: -- Mbps';
-    uploadBox.textContent='Upload: -- Mbps';
-    pingProgress.style.width='0%';
-    downloadProgress.style.width='0%';
-    uploadProgress.style.width='0%';
-
-    try{
-        const speedtest = new Speedtest({
-            token: "YOUR-OPENSPEED-TOKEN", // optional if public
-            verbose:true
-        });
-
-        speedtest.onupdate = function(data){
-            if(data.progressPing){ pingProgress.style.width = `${data.progressPing*100}%`; }
-            if(data.progressDL){ downloadProgress.style.width = `${data.progressDL*100}%`; downloadBox.textContent=`Download: ${data.speeds.download.toFixed(1)} Mbps`; }
-            if(data.progressUL){ uploadProgress.style.width = `${data.progressUL*100}%`; uploadBox.textContent=`Upload: ${data.speeds.upload.toFixed(1)} Mbps`; }
-            pingBox.textContent=`Ping: ${data.ping.avg.toFixed(1)} ms | Jitter: ${data.ping.jitter.toFixed(1)} ms`;
-        }
-
-        speedtest.onend = function(aborted){
-            if(aborted) alert('Test aborted'); 
-            else{
-                saveHistory({
-                    time:new Date().toLocaleString(),
-                    ping: speedtest.ping.avg.toFixed(1),
-                    jitter: speedtest.ping.jitter.toFixed(1),
-                    download: speedtest.speeds.download.toFixed(1),
-                    upload: speedtest.speeds.upload.toFixed(1)
-                });
-            }
-            startBtn.disabled=false;
-            startBtn.textContent='Start Test';
-        }
-
-        speedtest.start();
-    }catch(err){
-        console.error(err);
-        alert('Speed test failed!');
-        startBtn.disabled=false;
-        startBtn.textContent='Start Test';
-    }
+// Simulated ping
+async function measurePing(){
+  pingProgress.style.width='0%';
+  let ping=Math.random()*50+10; // simulate 10-60ms
+  for(let i=0;i<=100;i+=20){ pingProgress.style.width=i+'%'; await new Promise(r=>setTimeout(r,20)); }
+  pingEl.textContent=`Ping: ${ping.toFixed(1)} ms | Jitter: ${(Math.random()*5).toFixed(1)} ms`;
+  return ping;
 }
 
-startBtn.addEventListener('click', runSpeedTest);
+// Simulated download
+async function measureDownload(){
+  downloadProgress.style.width='0%';
+  let mbps=Math.random()*80+20; // simulate 20-100Mbps
+  for(let i=0;i<=100;i+=20){ downloadProgress.style.width=i+'%'; await new Promise(r=>setTimeout(r,50)); }
+  downloadEl.textContent=`Download: ${mbps.toFixed(1)} Mbps`;
+  return mbps;
+}
 
-// Share Result
-document.getElementById('shareBtn').addEventListener('click', ()=>{
-    if(historyData.length===0) return alert('No result to share yet');
-    const latest = historyData[0];
-    const text=`My Internet Speed: Download ${latest.download} Mbps, Upload ${latest.upload} Mbps, Ping ${latest.ping} ms (Jitter ${latest.jitter} ms)`;
-    if(navigator.share){ navigator.share({title:'My Speed Test Result', text}); }
-    else { navigator.clipboard.writeText(text).then(()=>alert('Result copied to clipboard')); }
+// Simulated upload
+async function measureUpload(){
+  uploadProgress.style.width='0%';
+  let mbps=Math.random()*40+5; // simulate 5-45Mbps
+  for(let i=0;i<=100;i+=20){ uploadProgress.style.width=i+'%'; await new Promise(r=>setTimeout(r,50)); }
+  uploadEl.textContent=`Upload: ${mbps.toFixed(1)} Mbps`;
+  return mbps;
+}
+
+startBtn.addEventListener('click', async ()=>{
+  startBtn.disabled=true;
+  pingProgress.style.width=downloadProgress.style.width=uploadProgress.style.width='0%';
+  const ping=await measurePing();
+  const download=await measureDownload();
+  const upload=await measureUpload();
+  historyData.unshift({time:new Date().toLocaleString(), ping, download, upload});
+  if(historyData.length>10) historyData.pop();
+  localStorage.setItem('speedTestHistory', JSON.stringify(historyData));
+  renderHistory();
+  startBtn.disabled=false;
 });
 
-// PWA Install
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt=e; installBtn.style.display='inline-block'; });
-installBtn.addEventListener('click', async ()=>{
-    if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.style.display='none'; }
+// Share
+document.getElementById('shareBtn').addEventListener('click', ()=>{
+  if(historyData.length===0) return alert('No result to share');
+  const latest=historyData[0];
+  const text=`My Internet Speed: Download ${latest.download} Mbps, Upload ${latest.upload} Mbps, Ping ${latest.ping} ms`;
+  if(navigator.share){ navigator.share({title:'My Speed Test', text}); }
+  else{ navigator.clipboard.writeText(text).then(()=>alert('Copied to clipboard')); }
 });
 </script>
 </body>
