@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Velocity Internet Speed Test – Final Custom</title>
+<title>Velocity Internet Speed Test – Accurate OpenSpeed</title>
 
 <!-- Tailwind & Fonts -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -35,8 +35,11 @@ body.light-mode .progress-fill { background:linear-gradient(90deg,#3a47d5,#00d2f
 #shareBtn, #installBtn { cursor:pointer; transition:all 0.3s ease; margin:5px; padding:5px 10px; border-radius:8px; border:1px solid #00d2ff; background:rgba(0,0,0,0.3); color:#00d2ff; }
 #shareBtn:hover, #installBtn:hover { background:rgba(0,0,0,0.5); }
 </style>
-</head>
 
+<!-- OpenSpeed JS -->
+<script src="https://cdn.jsdelivr.net/gh/sivel/speedtest.js/speedtest.min.js"></script>
+
+</head>
 <body class="flex flex-col items-center justify-start min-h-screen relative overflow-x-hidden">
 
 <div class="futuristic-logo" onclick="location.reload();">Velocity</div>
@@ -66,7 +69,6 @@ body.light-mode .progress-fill { background:linear-gradient(90deg,#3a47d5,#00d2f
 <div id="history" class="w-80"></div>
 
 <script>
-// Elements
 const startBtn = document.getElementById('startBtn');
 const pingProgress = document.getElementById('pingProgress');
 const downloadProgress = document.getElementById('downloadProgress');
@@ -78,7 +80,7 @@ const historyDiv = document.getElementById('history');
 const themeToggle = document.getElementById('themeToggle');
 const installBtn = document.getElementById('installBtn');
 
-// Theme
+// Theme toggle
 const savedTheme = localStorage.getItem('velocityTheme') || 'dark';
 if(savedTheme==='light'){ document.body.classList.add('light-mode'); themeToggle.textContent='☀️ Light'; }
 themeToggle.addEventListener('click', ()=>{
@@ -96,44 +98,7 @@ function renderHistory(){
 }
 renderHistory();
 
-// Speed Test Functions
-async function pingTest(url,count=5){
-    let times=[];
-    for(let i=0;i<count;i++){
-        const start=performance.now();
-        try{ await fetch(url+'?cache='+Math.random(),{cache:'no-store'}); } catch(e){}
-        const end=performance.now();
-        times.push(end-start);
-        pingProgress.style.width = `${((i+1)/count)*100}%`;
-    }
-    const avg = (times.reduce((a,b)=>a+b,0)/times.length).toFixed(1);
-    const jitter = (Math.max(...times)-Math.min(...times)).toFixed(1);
-    return {avg,jitter};
-}
-
-async function downloadTest(url,sizeMB=10){
-    const start=performance.now();
-    await fetch(url+'?cache='+Math.random(),{cache:'no-store'});
-    const end=performance.now();
-    const seconds=(end-start)/1000;
-    const mbps=((sizeMB*8)/seconds).toFixed(1);
-    downloadProgress.style.width='100%';
-    return mbps;
-}
-
-async function uploadTest(url,sizeMB=1){
-    const data = new Uint8Array(sizeMB*1024*1024);
-    crypto.getRandomValues(data);
-    const start=performance.now();
-    try{ await fetch(url+'?cache='+Math.random(), {method:'POST', body:data}); } catch(e){}
-    const end=performance.now();
-    const seconds=(end-start)/1000;
-    const mbps=((sizeMB*8)/seconds).toFixed(1);
-    uploadProgress.style.width='100%';
-    return mbps;
-}
-
-// Run Test
+// OpenSpeed Test
 async function runSpeedTest(){
     startBtn.disabled=true;
     startBtn.textContent='Testing...';
@@ -144,24 +109,41 @@ async function runSpeedTest(){
     downloadProgress.style.width='0%';
     uploadProgress.style.width='0%';
 
-    const testFile='https://speed.hetzner.de/10MB.bin';
-    const uploadURL='https://httpbin.org/post';
-
     try{
-        const pingRes = await pingTest(testFile);
-        pingBox.textContent = `Ping: ${pingRes.avg} ms | Jitter: ${pingRes.jitter} ms`;
+        const speedtest = new Speedtest({
+            token: "YOUR-OPENSPEED-TOKEN", // optional if public
+            verbose:true
+        });
 
-        const download = await downloadTest(testFile,10);
-        downloadBox.textContent = `Download: ${download} Mbps`;
+        speedtest.onupdate = function(data){
+            if(data.progressPing){ pingProgress.style.width = `${data.progressPing*100}%`; }
+            if(data.progressDL){ downloadProgress.style.width = `${data.progressDL*100}%`; downloadBox.textContent=`Download: ${data.speeds.download.toFixed(1)} Mbps`; }
+            if(data.progressUL){ uploadProgress.style.width = `${data.progressUL*100}%`; uploadBox.textContent=`Upload: ${data.speeds.upload.toFixed(1)} Mbps`; }
+            pingBox.textContent=`Ping: ${data.ping.avg.toFixed(1)} ms | Jitter: ${data.ping.jitter.toFixed(1)} ms`;
+        }
 
-        const upload = await uploadTest(uploadURL,1);
-        uploadBox.textContent = `Upload: ${upload} Mbps`;
+        speedtest.onend = function(aborted){
+            if(aborted) alert('Test aborted'); 
+            else{
+                saveHistory({
+                    time:new Date().toLocaleString(),
+                    ping: speedtest.ping.avg.toFixed(1),
+                    jitter: speedtest.ping.jitter.toFixed(1),
+                    download: speedtest.speeds.download.toFixed(1),
+                    upload: speedtest.speeds.upload.toFixed(1)
+                });
+            }
+            startBtn.disabled=false;
+            startBtn.textContent='Start Test';
+        }
 
-        saveHistory({time:new Date().toLocaleString(), ping:pingRes.avg, jitter:pingRes.jitter, download, upload});
-    } catch(err){ console.error(err); alert('Speed test failed!'); }
-
-    startBtn.disabled=false;
-    startBtn.textContent='Start Test';
+        speedtest.start();
+    }catch(err){
+        console.error(err);
+        alert('Speed test failed!');
+        startBtn.disabled=false;
+        startBtn.textContent='Start Test';
+    }
 }
 
 startBtn.addEventListener('click', runSpeedTest);
