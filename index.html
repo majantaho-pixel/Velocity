@@ -66,8 +66,8 @@
 <!-- AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-<!-- LibreSpeed JS -->
-<script src="https://public.librespeed.org/librespeed.js"></script>
+<!-- OpenSpeed Network JS -->
+<script src="https://openspeednetwork.com/openspeed.js"></script>
 
 <!-- CUSTOM STYLES (keep original design intact) -->
 <style>
@@ -238,55 +238,3 @@ data-full-width-responsive="true"></ins>
   function renderHistory(){ historyDiv.innerHTML = history.length===0 ? '<em>No history yet</em>' : history.map(r => `<div>${r.time}: Ping ${r.ping} ms | Download ${r.download} Mbps | Upload ${r.upload} Mbps</div>`).join(''); }
 
   document.getElementById('historyBtn').addEventListener('click', () => { historyDiv.classList.toggle('hidden'); renderHistory(); });
-
-  // Run Speed Test
-  async function runSpeedTest() {
-    startBtn.disabled = true;
-    startBtn.classList.add('active');
-    readingLine.textContent = 'Testing network…';
-
-    try {
-      const test = new Librespeed({server:'https://test.librespeed.org', download:true, upload:true, ping:true});
-      test.on('download', val => {
-        const mbps = (val / 125000).toFixed(1);
-        downloadProgress.style.width = `${Math.min(val/1000000,100)}%`;
-        downloadBox.textContent = `Download: ${mbps} Mbps`;
-      });
-      test.on('upload', val => {
-        const mbps = (val / 125000).toFixed(1);
-        uploadProgress.style.width = `${Math.min(val/1000000,100)}%`;
-        uploadBox.textContent = `Upload: ${mbps} Mbps`;
-      });
-      test.on('ping', val => {
-        pingProgress.style.width = `${Math.min(val*2,100)}%`;
-        pingBox.innerHTML = `Ping: ${val.toFixed(1)} ms<br>Jitter: ${(Math.random()*5).toFixed(1)} ms`;
-      });
-
-      const result = await test.start();
-      readingLine.textContent = 'Test completed ✅';
-
-      saveHistory({time: new Date().toLocaleString(), ping: result.ping.toFixed(1), download: (result.download/125000).toFixed(1), upload: (result.upload/125000).toFixed(1)});
-    } catch(err){
-      readingLine.textContent = 'Test failed ❌';
-      console.error('Speed test error:', err);
-    }
-
-    startBtn.disabled = false;
-    startBtn.classList.remove('active');
-  }
-
-  startBtn.addEventListener('click', runSpeedTest);
-
-  // Share Result
-  document.getElementById('shareBtn').addEventListener('click', ()=>{
-    const latest = history[0]; if(!latest) return alert('No result to share yet');
-    const text = `My Internet Speed: Download ${latest.download} Mbps, Upload ${latest.upload} Mbps, Ping ${latest.ping} ms.`;
-    if(navigator.share){ navigator.share({ title:'My Speed Test Result', text }); }
-    else { navigator.clipboard.writeText(text).then(()=>alert('Result copied to clipboard')); }
-  });
-
-  // Initialize Ads
-  (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</body>
-</html>
